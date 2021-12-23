@@ -27,9 +27,9 @@ public class Runner {
         }
         int daysFistTrip = businessTrips[0].getNumberOfDays();
         int daySecondTrip = businessTrips[1].getNumberOfDays();
-        System.out.println(businessTrips[index]);
+        System.out.println("Max total trip: " + businessTrips[index]);
         businessTrips[businessTrips.length - 1].setTransportationExpenses(211);
-        System.out.println(daysFistTrip + daySecondTrip);
+        System.out.println("Duration = " + daysFistTrip + daySecondTrip);
         for (BusinessTrip businessTrip : businessTrips) {
             System.out.println(businessTrip);
         }

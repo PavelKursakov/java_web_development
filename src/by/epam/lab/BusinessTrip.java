@@ -1,70 +1,64 @@
 package by.epam.lab;
 
 public class BusinessTrip {
-    private final static int DAILY = 750;
-    private String employee;
-    private int transportationExpenses;
-    private int numberOfDays;
+    private final static int DAILY_RATE = 950;
+    private String account;
+    private int expenses;
+    private int daysNumber;
 
     public BusinessTrip() {
     }
 
     public BusinessTrip(String employee, int transportationExpenses, int numberOfDays) {
-        this.employee = employee;
-        this.transportationExpenses = transportationExpenses;
-        this.numberOfDays = numberOfDays;
+        this.account = employee;
+        this.expenses = transportationExpenses;
+        this.daysNumber = numberOfDays;
     }
 
-    public String getEmployee() {
-        return employee;
+    public String getAccount() {
+        return account;
     }
 
-    public void setEmployee(String employee) {
-        this.employee = employee;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
-    public int getTransportationExpenses() {
-        return transportationExpenses;
+    public int getExpenses() {
+        return expenses;
     }
 
-    public void setTransportationExpenses(int transportationExpenses) {
-        this.transportationExpenses = transportationExpenses;
+    public void setExpenses(int expenses) {
+        this.expenses = expenses;
     }
 
-    public int getNumberOfDays() {
-        return numberOfDays;
+    public int getDaysNumber() {
+        return daysNumber;
     }
 
-    public void setNumberOfDays(int numberOfDays) {
-        this.numberOfDays = numberOfDays;
+    public void setDaysNumber(int daysNumber) {
+        this.daysNumber = daysNumber;
     }
 
     public int getTotal() {
-        return transportationExpenses + DAILY * numberOfDays;
+        return expenses + DAILY_RATE * daysNumber;
     }
 
     private static String convert(int penny) {
-        String result;
         int rub = penny / 100;
         int pennyResult = penny % 100;
-        if (pennyResult < 10) {
-            result = rub + ".0" + pennyResult;
-        } else {
-            result = rub + "." + pennyResult;
-        }
-        return result;
+        return String.format("%d.%d", rub,pennyResult);
     }
 
     public void show() {
-        System.out.println("rate = " + convert(DAILY) + "\n" + "Employee's account = " + employee +
-                "\n" + "transport = " + convert(transportationExpenses) + "\n" +
-                "days = " + numberOfDays + "\n" + "total = " + convert(getTotal()));
+        System.out.println("rate = " + convert(DAILY_RATE) + "\n" + "Employee's account = " +
+                account + "\n" + "transport = " + convert(expenses) + "\n" +
+                "days = " + daysNumber + "\n" + "total = " + convert(getTotal()));
     }
 
 
     @Override
     public String toString() {
-        return employee + ";" + convert(transportationExpenses) + ";" + numberOfDays + ";" +
+        return account + ";" + convert(expenses) + ";" + daysNumber + ";" +
                 convert(getTotal());
     }
 }

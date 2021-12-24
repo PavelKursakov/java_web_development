@@ -25,11 +25,10 @@ public class Runner {
             }
             count++;
         }
-        int daysFistTrip = businessTrips[0].getNumberOfDays();
-        int daySecondTrip = businessTrips[1].getNumberOfDays();
         System.out.println("Max total trip: " + businessTrips[index]);
-        businessTrips[businessTrips.length - 1].setTransportationExpenses(211);
-        System.out.println("Duration = " + daysFistTrip + daySecondTrip);
+        businessTrips[businessTrips.length - 1].setExpenses(211);
+        System.out.println("Duration = " + businessTrips[0].getDaysNumber() +
+                businessTrips[1].getDaysNumber());
         for (BusinessTrip businessTrip : businessTrips) {
             System.out.println(businessTrip);
         }

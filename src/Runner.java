@@ -10,22 +10,17 @@ public class Runner {
                 new BusinessTrip("Vova", 2120, 3),
                 new BusinessTrip()
         };
-        int maxTotal = 0;
-        int count = 0;
-        int index = 0;
+        BusinessTrip businessTripMax = new BusinessTrip();
         for (BusinessTrip businessTrip : businessTrips) {
             if (businessTrip == null) {
-                count++;
                 continue;
             }
             businessTrip.show();
-            if (businessTrip.getTotal() > maxTotal) {
-                maxTotal = businessTrip.getTotal();
-                index = count;
+            if (businessTrip.getTotal() > businessTripMax.getTotal()) {
+                businessTripMax = businessTrip;
             }
-            count++;
         }
-        System.out.println("Max total trip: " + businessTrips[index]);
+        System.out.println("Max total trip: " + businessTripMax);
         businessTrips[businessTrips.length - 1].setExpenses(211);
         System.out.println("Duration = " + businessTrips[0].getDaysNumber() +
                 businessTrips[1].getDaysNumber());

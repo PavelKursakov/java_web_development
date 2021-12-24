@@ -44,9 +44,7 @@ public class BusinessTrip {
     }
 
     private static String convert(int penny) {
-        int rub = penny / 100;
-        int pennyResult = penny % 100;
-        return String.format("%d.%d", rub,pennyResult);
+        return String.format("%d.%02d", penny / 100, penny % 100);
     }
 
     public void show() {

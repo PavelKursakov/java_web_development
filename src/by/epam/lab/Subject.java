@@ -5,7 +5,7 @@ public class Subject {
     private Material material;
     private double volume;
 
-    public Subject () {
+    public Subject() {
 
     }
 
@@ -41,11 +41,12 @@ public class Subject {
     }
 
     public double getMass() {
-        return material.getDensity()*volume;
+        return material.getDensity() * volume;
     }
 
     @Override
     public String toString() {
-        return name + ";" + material.getName() + ";" + material.getDensity() + ";" + volume + ";" + getMass();
+        return name + ";" + material.getName() + ";" + material.getDensity() +
+                ";" + volume + ";" + getMass();
     }
 }

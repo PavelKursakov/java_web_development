@@ -28,8 +28,8 @@ public class Subject {
         return material;
     }
 
-    public void setMaterial(Material material) {
-        this.material = material;
+    public void setMaterial(Material material1) {
+        this.material = material1;
     }
 
     public double getVolume() {

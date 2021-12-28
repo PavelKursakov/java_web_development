@@ -1,28 +1,27 @@
 package by.epam.lab;
 
-public class Material {
-    private final String name;
+import java.util.Locale;
+
+public enum Material {
+    STEEL(7850.0),
+    COPPER(8500.0);
+
     private final double density;
 
-    public Material() {
-        this(null, 0.0);
-    }
-
-    public Material(String name, double density) {
-        this.name = name;
+    Material(double density) {
         this.density = density;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public double getDensity() {
         return density;
     }
 
+    public String getName() {
+        return name().toLowerCase(Locale.ROOT);
+    }
+
     @Override
     public String toString() {
-        return name + ";" + density;
+        return getName() + ";" + density;
     }
 }

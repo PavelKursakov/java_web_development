@@ -38,7 +38,7 @@ public class Purchase implements Comparable<Purchase> {
     }
 
     public int getCost() {
-        return (int) (PRICE * numberOfUnits * (100 - percent) / 100);
+        return (int) Math.round((PRICE * numberOfUnits * (100 - percent) / 100) / 100) * 100;
     }
 
     private static String convert(int coins) {

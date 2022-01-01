@@ -1,3 +1,4 @@
+import by.epam.lab.Converter;
 import by.epam.lab.Purchase;
 import by.epam.lab.WeekDay;
 
@@ -17,7 +18,7 @@ public class Runner {
                 purchases[i] = new Purchase(
                         sc.nextInt(),
                         sc.nextDouble(),
-                        WeekDay.values()[sc.nextInt()]
+                        sc.nextInt()
                 );
             }
             showInfo(purchases);
@@ -40,14 +41,14 @@ public class Runner {
                 }
             }
 
-            double meanCost = 0;
+            double meanCost = 0.0;
 
             if (PURCHASE_NUMBER > 0) {
                 meanCost = (double) totalCost / purchases.length / 100;
             }
 
             System.out.printf("Mean cost = %.3f \n", meanCost);
-            System.out.println("The total cost on Monday = " + convert(sumOfMonday));
+            System.out.println("The total cost on Monday = " + Converter.convert(sumOfMonday));
             System.out.println("Day with max cost is " + dayWithMaxCost);
 
             Arrays.sort(purchases);
@@ -70,15 +71,10 @@ public class Runner {
     }
 
     private static void showInfo(Purchase[] purchases) {
-        if (purchases.length != 0) {
-            System.out.println(convert(Purchase.PRICE) + ";" + Purchase.NAME);
-        }
+        System.out.println(Converter.convert(Purchase.PRICE) + ";" + Purchase.NAME);
         for (Purchase purchase : purchases) {
             System.out.println(purchase);
         }
     }
 
-    private static String convert(int coins) {
-        return String.format("%d.%02d", coins / 100, coins % 100);
-    }
 }

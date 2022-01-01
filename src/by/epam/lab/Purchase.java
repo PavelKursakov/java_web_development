@@ -17,6 +17,10 @@ public class Purchase implements Comparable<Purchase> {
         this.weekDay = weekDay;
     }
 
+    public Purchase(int numberOfUnits, double percent, int day) {
+        this(numberOfUnits, percent, WeekDay.values()[day]);
+    }
+
     public int getNumberOfUnits() {
         return numberOfUnits;
     }
@@ -41,13 +45,9 @@ public class Purchase implements Comparable<Purchase> {
         return (int) Math.round((PRICE * numberOfUnits * (100 - percent) / 100) / 100) * 100;
     }
 
-    private static String convert(int coins) {
-        return String.format("%d.%02d", coins / 100, coins % 100);
-    }
-
     @Override
     public String toString() {
-        return numberOfUnits + ";" + percent + ";" + weekDay + ";" + convert(getCost());
+        return numberOfUnits + ";" + percent + ";" + weekDay + ";" + Converter.convert(getCost());
     }
 
     @Override

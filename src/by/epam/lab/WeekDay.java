@@ -1,5 +1,7 @@
 package by.epam.lab;
 
+import java.util.Locale;
+
 public enum WeekDay {
     SUNDAY,
     MONDAY,
@@ -7,5 +9,10 @@ public enum WeekDay {
     WEDNESDAY,
     THURSDAY,
     FRIDAY,
-    SATURDAY
+    SATURDAY;
+
+    @Override
+    public String toString() {
+        return name().toLowerCase(Locale.ROOT);
+    }
 }

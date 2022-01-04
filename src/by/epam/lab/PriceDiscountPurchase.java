@@ -16,7 +16,7 @@ public class PriceDiscountPurchase extends Purchase {
 
     public PriceDiscountPurchase(Scanner sc) {
         super(sc);
-        this.discount = new Byn(sc);
+        discount = new Byn(sc);
     }
 
     public Byn getDiscount() {
@@ -29,7 +29,7 @@ public class PriceDiscountPurchase extends Purchase {
 
     @Override
     public Byn getCost() {
-        return new Byn().add(getPrice()).sub(discount).mul(getNumberOfUnits());
+        return new Byn(getPrice()).sub(discount).mul(getNumberOfUnits());
     }
 
     @Override

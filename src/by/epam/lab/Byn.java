@@ -13,23 +13,23 @@ public class Byn implements Comparable<Byn> {
     }
 
     public Byn(int rubs, int coins) {
-        this(rubs*100+coins);
+        this(rubs * 100 + coins);
     }
 
     public Byn(Byn byn) {
         this(byn.value);
     }
 
-    public Byn(Scanner sc){
+    public Byn(Scanner sc) {
         this(sc.nextInt());
     }
 
-    public int getRubs(){
-        return value/100;
+    public int getRubs() {
+        return value / 100;
     }
 
-    public int getCoins(){
-        return value%100;
+    public int getCoins() {
+        return value % 100;
     }
 
     public Byn add(Byn byn) {
@@ -52,35 +52,37 @@ public class Byn implements Comparable<Byn> {
         return this;
     }
 
-    public Byn mul(double k, RoundMethod roundMethod, int d){
-        int tenPow = (int) Math.pow(10, d);
-        value = (int) roundMethod.roundFunction(value * k / tenPow) * tenPow;
-        return this;
-    }
-    public Byn round(RoundMethod roundMethod, int d){
-        int tenPow = (int) Math.pow(10, d);
-        value = (int) roundMethod.roundFunction((double) value / tenPow) * tenPow;
+    public Byn mul(double k, RoundMethod roundMethod, int d) {
+        value = roundMethod.round(value * k, d);
         return this;
     }
 
+    public Byn round(RoundMethod roundMethod, int d) {
+        value = roundMethod.round(value, d);
+        return this;
+    }
 
 
     @Override
     public String toString() {
-        return Converter.convert(value);
+        return String.format("%d.%02d", value / 100, value % 100);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Byn byn = (Byn) o;
         return value == byn.value;
     }
 
     @Override
-    public int compareTo(Byn o) {
-        return value - o.value;
+    public int compareTo(Byn byn) {
+        return value - byn.value;
     }
 }
 

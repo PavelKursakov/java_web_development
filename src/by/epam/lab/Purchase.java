@@ -1,6 +1,5 @@
 package by.epam.lab;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Purchase {
@@ -48,7 +47,7 @@ public class Purchase {
     }
 
     public Byn getCost() {
-        return new Byn().add(price).mul(numberOfUnits);
+        return new Byn(price).mul(numberOfUnits);
     }
 
     protected String fieldsToString () {
@@ -62,8 +61,12 @@ public class Purchase {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || !(o instanceof Purchase)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || !(o instanceof Purchase)) {
+            return false;
+        }
         Purchase purchase = (Purchase) o;
         return name.equals(purchase.name) && price.equals(purchase.price);
     }

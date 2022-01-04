@@ -21,8 +21,8 @@ public class Runner {
                 if (purchases[i].getCost().compareTo(purchaseMaxCost.getCost()) > 0) {
                     purchaseMaxCost = purchases[i];
                 }
-                if (!purchases[0].equals(purchases[i])){
-                    purchaseEquals = false;
+                if (purchaseEquals){
+                    purchaseEquals = purchases[0].equals(purchases[i]);
                 }
 
             }

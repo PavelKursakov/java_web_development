@@ -30,11 +30,9 @@ public class DiscountPurchase extends Purchase {
 
     @Override
     public Byn getCost() {
-        Byn byn = new Byn();
+        Byn byn = new Byn(super.getCost());
         if (getNumberOfUnits() > UNIT_NUMBER) {
-            byn = byn.add(super.getCost()).mul(1 - discountPercent / 100);
-        } else {
-            byn = super.getCost();
+            byn = byn.mul(1 - discountPercent / 100);
         }
         return byn;
     }

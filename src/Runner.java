@@ -24,6 +24,7 @@ public class Runner {
                 if (!purchases[0].equals(purchases[i])){
                     purchaseEquals = false;
                 }
+
             }
 
             if (purchaseEquals) {
@@ -34,7 +35,7 @@ public class Runner {
             System.out.println("Purchase with max cost: " + purchaseMaxCost);
 
         } catch (FileNotFoundException e) {
-            System.out.println("File is not found");
+            System.err.println("Input file is not found");
         }
     }
 }

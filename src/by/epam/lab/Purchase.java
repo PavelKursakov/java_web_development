@@ -19,7 +19,7 @@ public class Purchase {
 
     public Purchase(Scanner sc) {
         this.name = sc.next();
-        this.price = new Byn(sc.nextInt());
+        this.price = new Byn(sc);
         this.numberOfUnits = sc.nextInt();
     }
 
@@ -52,7 +52,7 @@ public class Purchase {
     }
 
     protected String fieldsToString () {
-        return name + ";" + price + ";" + numberOfUnits;
+        return getClass().getSimpleName() + ";" + name + ";" + price + ";" + numberOfUnits;
     }
 
     @Override

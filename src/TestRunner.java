@@ -14,7 +14,7 @@ public class TestRunner {
         Assert.assertEquals("3.30",byn1.toString());
         byn1.mul(5);
         Assert.assertEquals(new Byn(1650),byn1);
-        byn1.diff(new Byn(150));
+        byn1.sub(new Byn(150));
         Assert.assertEquals(new Byn(1500),byn1);
     }
 

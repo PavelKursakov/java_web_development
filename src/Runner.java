@@ -22,8 +22,8 @@ public class Runner {
         }
         System.out.println("Max total trip: " + businessTripMax);
         businessTrips[businessTrips.length - 1].setExpenses(211);
-        System.out.println("Duration = " + businessTrips[0].getDaysNumber() +
-                businessTrips[1].getDaysNumber());
+        System.out.println("Duration = " + (businessTrips[0].getDaysNumber() +
+                businessTrips[1].getDaysNumber()));
         for (BusinessTrip businessTrip : businessTrips) {
             System.out.println(businessTrip);
         }

@@ -10,7 +10,7 @@ public class Runner {
                 new DiscountPurchase(milk, 3, 15.0),
                 new PriceDiscountPurchase(milk, 5, new Byn(32)),
                 new PriceDiscountPurchase(milk, 2, new Byn(25)),
-                new TransportExpensesPurchase(milk, 7, new Byn(140)),
+                new TransportExpensesPurchase(milk, 4, new Byn(140)),
                 new TransportExpensesPurchase(milk, 3, new Byn(65))
         };
         showArray(purchases);
@@ -19,18 +19,18 @@ public class Runner {
         showArray(purchases);
         System.out.println("Min cost: " + purchases[purchases.length - 1].getCost());
 
-        int index = search(purchases);
+        int index = search(purchases, new DiscountPurchase(milk, 5, 0.0));
 
-        if (index < 0){
+        if (index < 0) {
             System.out.println("Element is not found.");
         } else {
             System.out.println("\nRequired element: " + purchases[index]);
         }
 
     }
-    private static int search (AbstractPurchase[] purchases) {
-        return Arrays.binarySearch(purchases,new DiscountPurchase(
-                new Product("",new Byn(500)),1,0.0));
+
+    private static int search(AbstractPurchase[] purchases, AbstractPurchase purchase) {
+        return Arrays.binarySearch(purchases, purchase);
     }
 
     private static void showArray(AbstractPurchase[] array) {

@@ -1,6 +1,6 @@
 package by.epam.lab;
 
-public abstract class AbstractPurchase implements Comparable<AbstractPurchase>{
+public abstract class AbstractPurchase implements Comparable<AbstractPurchase> {
     private Product product;
     private int numberOfUnits;
 
@@ -28,11 +28,11 @@ public abstract class AbstractPurchase implements Comparable<AbstractPurchase>{
         this.numberOfUnits = numberOfUnits;
     }
 
-    public Byn getCost(){
-        return getCostCalculation().round(RoundMethod.FLOOR,2);
+    public Byn getCost() {
+        return getCostCalculation().round(RoundMethod.FLOOR, 2);
     }
 
-    protected String fieldsToString(){
+    protected String fieldsToString() {
         return product + ";" + numberOfUnits;
     }
 

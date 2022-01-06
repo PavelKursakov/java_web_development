@@ -26,7 +26,7 @@ public class TestRunner {
         DiscountPurchase p2 =
                 new DiscountPurchase(milk, 3, 15.0);
         TransportExpensesPurchase p3 =
-                new TransportExpensesPurchase(milk, 7, new Byn(140));
+                new TransportExpensesPurchase(milk, 4, new Byn(140));
         Assert.assertEquals(new Byn(300), p1.getCost());
         Assert.assertEquals(new Byn(300), p2.getCost());
         Assert.assertEquals(new Byn(500), p3.getCost());
@@ -37,16 +37,15 @@ public class TestRunner {
         Product milk = new Product("milk", new Byn(100));
         AbstractPurchase[] purchases = {
                 new PriceDiscountPurchase(milk, 5, new Byn(32)),
-                new DiscountPurchase(milk, 3, 15.0),
-                new TransportExpensesPurchase(milk, 7, new Byn(140)),
+                new DiscountPurchase(milk, 4, 15.0),
+                new TransportExpensesPurchase(milk, 3, new Byn(140)),
                 new TransportExpensesPurchase(milk, 4, new Byn(190))
         };
         //Sort array.
         Arrays.sort(purchases);
         //Search element in array, when required element first in array.
-        System.out.println(purchases[0]);
         int index = search(purchases, new TransportExpensesPurchase(
-                milk, 6, new Byn(50)));
+                milk, 5, new Byn(50)));
         Assert.assertEquals(purchases[0], purchases[index]);
         //Search element in array, when required element last in array.
         index = search(purchases, new TransportExpensesPurchase(

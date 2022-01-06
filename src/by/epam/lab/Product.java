@@ -12,7 +12,7 @@ public class Product {
         this.price = price;
     }
 
-    public Product(Product product){
+    public Product(Product product) {
         this(product.name, product.price);
     }
 

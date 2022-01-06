@@ -1,10 +1,9 @@
 package by.epam.lab;
 
-public class TransportExpensesPurchase extends AbstractPurchase{
+public class TransportExpensesPurchase extends AbstractPurchase {
     private Byn expenses;
 
     public TransportExpensesPurchase() {
-        super();
     }
 
     public TransportExpensesPurchase(Product product, int numberOfUnits, Byn expenses) {
@@ -27,6 +26,6 @@ public class TransportExpensesPurchase extends AbstractPurchase{
 
     @Override
     protected Byn getCostCalculation() {
-        return new Byn(getProduct().getPrice()).mul(getNumberOfUnits()).sub(expenses);
+        return new Byn(getProduct().getPrice()).mul(getNumberOfUnits()).add(expenses);
     }
 }

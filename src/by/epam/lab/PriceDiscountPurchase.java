@@ -1,6 +1,6 @@
 package by.epam.lab;
 
-public class PriceDiscountPurchase  extends AbstractPurchase{
+public class PriceDiscountPurchase extends AbstractPurchase {
     private Byn discount;
 
     public PriceDiscountPurchase() {

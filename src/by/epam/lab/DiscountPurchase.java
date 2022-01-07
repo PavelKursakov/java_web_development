@@ -27,11 +27,10 @@ public class DiscountPurchase extends AbstractPurchase {
     }
 
     @Override
-    protected Byn getCostCalculation() {
-        Byn byn = new Byn(getProduct().getPrice()).mul(getNumberOfUnits());
+    protected Byn getCostCalculation(Byn baseCost) {
         if (getNumberOfUnits() > UNITS_NUMBER) {
-            byn.mul(discountPercent);
+            baseCost = baseCost.mul(1 - discountPercent/100);
         }
-        return byn;
+        return baseCost;
     }
 }

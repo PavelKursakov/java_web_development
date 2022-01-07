@@ -1,18 +1,19 @@
 package by.epam.lab;
 
 public class Product {
-    private String name;
-    private Byn price;
+    private final String name;
+    private final Byn price;
 
     public Product() {
+        this(null, null);
     }
 
     public Product(String name, Byn price) {
-        this.name = name;
         this.price = price;
+        this.name = name;
     }
 
-    public Product(Product product) {
+    public Product(Product product, Byn price, Byn price1) {
         this(product.name, product.price);
     }
 

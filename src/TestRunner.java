@@ -9,13 +9,13 @@ public class TestRunner {
     public void testClassByn() {
         Byn byn1 = new Byn(120);
         Byn byn2 = new Byn(210);
-        byn1.add(byn2);
-        Assert.assertEquals(new Byn(330), byn1);
-        Assert.assertEquals("3.30", byn1.toString());
-        byn1.mul(5);
-        Assert.assertEquals(new Byn(1650), byn1);
-        byn1.sub(new Byn(150));
-        Assert.assertEquals(new Byn(1500), byn1);
+        Byn bynAdd = byn1.add(byn2);
+        Assert.assertEquals(new Byn(330), bynAdd);
+        Assert.assertEquals("3.30", bynAdd.toString());
+        Byn bynMull = byn1.mul(5);
+        Assert.assertEquals(new Byn(600), bynMull);
+        Byn bynSub = byn2.sub(byn1);
+        Assert.assertEquals(new Byn(90), bynSub);
     }
 
     @Test
@@ -44,11 +44,11 @@ public class TestRunner {
         //Sort array.
         Arrays.sort(purchases);
         //Search element in array, when required element first in array.
-        int index = search(purchases, new TransportExpensesPurchase(
+        int index = Runner.search(purchases, new TransportExpensesPurchase(
                 milk, 5, new Byn(50)));
         Assert.assertEquals(purchases[0], purchases[index]);
         //Search element in array, when required element last in array.
-        index = search(purchases, new TransportExpensesPurchase(
+        index = Runner.search(purchases, new TransportExpensesPurchase(
                 milk, 3, new Byn(90)));
         Assert.assertEquals(purchases[purchases.length - 1], purchases[index]);
         //Check required element more than max element or little than min element
@@ -57,9 +57,5 @@ public class TestRunner {
         Assert.assertTrue(requiredElement.getCost().
                 compareTo(purchases[purchases.length - 1].getCost()) < 0 ||
                 requiredElement.getCost().compareTo(purchases[0].getCost()) > 0);
-    }
-
-    private static int search(AbstractPurchase[] purchases, AbstractPurchase purchase) {
-        return Arrays.binarySearch(purchases, purchase);
     }
 }

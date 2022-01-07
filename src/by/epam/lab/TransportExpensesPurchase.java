@@ -4,6 +4,7 @@ public class TransportExpensesPurchase extends AbstractPurchase {
     private Byn expenses;
 
     public TransportExpensesPurchase() {
+        super();
     }
 
     public TransportExpensesPurchase(Product product, int numberOfUnits, Byn expenses) {
@@ -25,7 +26,7 @@ public class TransportExpensesPurchase extends AbstractPurchase {
     }
 
     @Override
-    protected Byn getCostCalculation() {
-        return new Byn(getProduct().getPrice()).mul(getNumberOfUnits()).add(expenses);
+    protected Byn getCostCalculation(Byn baseCost) {
+        return baseCost.add(expenses);
     }
 }

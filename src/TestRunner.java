@@ -1,21 +1,23 @@
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class TestRunner {
+    private static final String RESULT_HEAD = "result(";
+    private static final String RESULT_TAIL = ") = ";
+
     private static int getResult(String csvName, StringBuilder result) throws FileNotFoundException {
         int errorLines = 0;
         double sum = 0.0;
-        final String RESULT_HEAD = "result(";
-        final String RESULT_TAIL = ") = ";
         final String SEMICOLON = ";";
-        final String PLUS = " + ";
-        final String MINUS = " - ";
-        final String ERROR_LINES = "error lines = ";
-        final String TABULATION = "\n";
+        final String BEFORE_SIGN = " ";
+        final String AFTER_SIGN = " ";
+        final String PLUS = BEFORE_SIGN + "+" + AFTER_SIGN;
+        final String MINUS = BEFORE_SIGN + "-" + AFTER_SIGN;
 
         try (Scanner scanner = new Scanner(new FileReader(csvName))) {
             scanner.useLocale(Locale.ENGLISH);
@@ -41,61 +43,68 @@ public class TestRunner {
                     result.insert(0, CHAR_MINUS);
                 }
             }
-            result.insert(0, RESULT_HEAD).append(RESULT_TAIL).append(sum).
-                    append(TABULATION).append(ERROR_LINES).append(errorLines);
+            result.insert(0, RESULT_HEAD).append(RESULT_TAIL).append(sum);
         }
         return errorLines;
     }
 
     @Test
     public void testMainScenarioIn1() throws FileNotFoundException {
-        final String csvName1 = "src/in1.csv";
+        String csvName1 = "src/in1.csv";
+        String result = "5.2 - 3.14 + 0.0";
+        String sum = "2.06";
         StringBuilder result1 = new StringBuilder();
         int errorLines1 = getResult(csvName1, result1);
         Assert.assertEquals(3, errorLines1);
-        String expectedIn1 = "result(5.2 - 3.14 + 0.0) = 2.06\n" +
-                "error lines = 3";
+        String expectedIn1 = String.format("%s%s%s%s", RESULT_HEAD, result, RESULT_TAIL, sum);
         Assert.assertEquals(expectedIn1, result1.toString());
     }
 
     @Test
     public void testMainScenarioIn2() throws FileNotFoundException {
-        final String csvName2 = "src/in2.csv";
+        String csvName2 = "src/in2.csv";
+        String result = "-3.1 - 1.0";
+        String sum = "-4.1";
         StringBuilder result2 = new StringBuilder();
         int errorLines2 = getResult(csvName2, result2);
         Assert.assertEquals(0, errorLines2);
-        String expectedIn2 = "result(-3.1 - 1.0) = -4.1\n" +
-                "error lines = 0";
+        String expectedIn2 = String.format("%s%s%s%s", RESULT_HEAD, result, RESULT_TAIL, sum);
         Assert.assertEquals(expectedIn2, result2.toString());
     }
 
     @Test
     public void testMainScenarioIn3() throws FileNotFoundException {
-        final String csvName3 = "src/in3.csv";
+        String csvName3 = "src/in3.csv";
+        String result = "0.75";
+        String sum = "0.75";
         StringBuilder result3 = new StringBuilder();
         int errorLines3 = getResult(csvName3, result3);
         Assert.assertEquals(0, errorLines3);
-        String expectedIn3 = "result(0.75) = 0.75\nerror lines = 0";
+        String expectedIn3 = String.format("%s%s%s%s", RESULT_HEAD, result, RESULT_TAIL, sum);
         Assert.assertEquals(expectedIn3, result3.toString());
     }
 
     @Test
     public void testMainScenarioIn4() throws FileNotFoundException {
-        final String csvName4 = "src/in4.csv";
+        String csvName4 = "src/in4.csv";
+        String result = "0.0";
+        String sum = "0.0";
         StringBuilder result4 = new StringBuilder();
         int errorLines4 = getResult(csvName4, result4);
         Assert.assertEquals(0, errorLines4);
-        String expectedIn4 = "result(0.0) = 0.0\nerror lines = 0";
+        String expectedIn4 = String.format("%s%s%s%s", RESULT_HEAD, result, RESULT_TAIL, sum);
         Assert.assertEquals(expectedIn4, result4.toString());
     }
 
     @Test
     public void testMainScenarioIn5() throws FileNotFoundException {
-        final String csvName5 = "src/in5.csv";
+        String csvName5 = "src/in5.csv";
+        String result = "";
+        String sum = "0.0";
         StringBuilder result5 = new StringBuilder();
         int errorLines5 = getResult(csvName5, result5);
         Assert.assertEquals(1, errorLines5);
-        String expectedIn5 = "result() = 0.0\nerror lines = 1";
+        String expectedIn5 = String.format("%s%s%s%s", RESULT_HEAD, result, RESULT_TAIL, sum);
         Assert.assertEquals(expectedIn5, result5.toString());
     }
 

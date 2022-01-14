@@ -9,15 +9,15 @@ import java.util.Scanner;
 public class TestRunner {
     private static final String RESULT_HEAD = "result(";
     private static final String RESULT_TAIL = ") = ";
+    private static final String BEFORE_SIGN = " ";
+    private static final String AFTER_SIGN = " ";
+    private static final String PLUS = BEFORE_SIGN + "+" + AFTER_SIGN;
+    private static final String MINUS = BEFORE_SIGN + "-" + AFTER_SIGN;
 
     private static int getResult(String csvName, StringBuilder result) throws FileNotFoundException {
         int errorLines = 0;
         double sum = 0.0;
         final String SEMICOLON = ";";
-        final String BEFORE_SIGN = " ";
-        final String AFTER_SIGN = " ";
-        final String PLUS = BEFORE_SIGN + "+" + AFTER_SIGN;
-        final String MINUS = BEFORE_SIGN + "-" + AFTER_SIGN;
 
         try (Scanner scanner = new Scanner(new FileReader(csvName))) {
             scanner.useLocale(Locale.ENGLISH);
@@ -51,7 +51,7 @@ public class TestRunner {
     @Test
     public void testMainScenarioIn1() throws FileNotFoundException {
         String csvName1 = "src/in1.csv";
-        String result = "5.2 - 3.14 + 0.0";
+        String result = String.format("5.2%s3.14%s0.0",MINUS,PLUS);
         String sum = "2.06";
         StringBuilder result1 = new StringBuilder();
         int errorLines1 = getResult(csvName1, result1);
@@ -63,7 +63,7 @@ public class TestRunner {
     @Test
     public void testMainScenarioIn2() throws FileNotFoundException {
         String csvName2 = "src/in2.csv";
-        String result = "-3.1 - 1.0";
+        String result = String.format("-3.1%s1.0",MINUS);
         String sum = "-4.1";
         StringBuilder result2 = new StringBuilder();
         int errorLines2 = getResult(csvName2, result2);

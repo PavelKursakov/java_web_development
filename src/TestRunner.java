@@ -44,27 +44,27 @@ public class TestRunner {
     }
 
     @Test
-    public void testMainScenarioFileIn1 () throws FileNotFoundException {
+    public void testMainScenarioFileIn1() throws FileNotFoundException {
         StringBuilder stringBuilder = new StringBuilder();
         final String fileName = "in1";
         int expected = 3;
         final String expectedSumStr = "8.24";
-        Assert.assertEquals(expected,getResult(fileName,stringBuilder));
-        Assert.assertEquals(expectedSumStr,stringBuilder.toString());
+        Assert.assertEquals(expected, getResult(fileName, stringBuilder));
+        Assert.assertEquals(expectedSumStr, stringBuilder.toString());
     }
 
     @Test
-    public void testMainScenarioFileIn2 () throws FileNotFoundException {
+    public void testMainScenarioFileIn2() throws FileNotFoundException {
         StringBuilder stringBuilder = new StringBuilder();
         final String fileName = "in2";
         int expected = 9;
         final String expectedSumStr = "30.242";
-        Assert.assertEquals(expected,getResult(fileName,stringBuilder));
-        Assert.assertEquals(expectedSumStr,stringBuilder.toString());
+        Assert.assertEquals(expected, getResult(fileName, stringBuilder));
+        Assert.assertEquals(expectedSumStr, stringBuilder.toString());
     }
 
     @Test(expected = MissingResourceException.class)
-    public void testFileIsNotFound() throws FileNotFoundException{
+    public void testFileIsNotFound() throws FileNotFoundException {
         final String fileName = "in10";
         getResult(fileName, new StringBuilder());
     }

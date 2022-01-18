@@ -5,67 +5,96 @@ import java.io.FileNotFoundException;
 import java.util.Enumeration;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TestRunner {
-    private final static String FILE_IS_NOT_FOUND = "file is not found";
-    private final static String REGEX_FOR_INDEX_LINE = "(index)[1-9]\\d*\\s*";
-    private final static String REGEX_FOR_INDEX_VALUE = "\\s*[1-9]\\d*\\s*";
-    private final static String REGEX_FOR_INDEX_WORD = "(index).*";
-    private final static String INDEX = "index";
-    private final static String VALUE = "value";
-
-    private static int getResult(String fileName, StringBuilder sumStr)
-            throws FileNotFoundException {
+    private static Result getResult(String fileName) throws FileNotFoundException {
+        final String REGEX_FOR_INDEX_VALUE = "[1-9]\\d*";
+        final int TAIL_INDEX = 1;
+        final String VALUE = "value";
+        final String REGEX_FOR_INDEX_WORD = "index(.*)";
+        int errorLines = 0;
         ResourceBundle rb = ResourceBundle.getBundle(fileName);
         Enumeration<String> keys = rb.getKeys();
         String key;
-        int errorLines = 0;
         double sum = 0.0;
         while (keys.hasMoreElements()) {
             key = keys.nextElement();
-            if (key.matches(REGEX_FOR_INDEX_WORD)) {
-                try {
-                    String keyValue = rb.getString(key);
-                    if (key.matches(REGEX_FOR_INDEX_LINE) &&
-                            keyValue.matches(REGEX_FOR_INDEX_VALUE)) {
-                        String i = key.substring(INDEX.length());
-                        sum += Double.parseDouble(rb.getString(VALUE + i + keyValue));
-                    } else {
+            Pattern pattern = Pattern.compile(REGEX_FOR_INDEX_WORD);
+            Matcher matcherKey = pattern.matcher(key);
+            if (matcherKey.matches()) {
+                String j = rb.getString(key).trim();
+                String i = matcherKey.group(TAIL_INDEX);
+                Pattern patternIJ = Pattern.compile(REGEX_FOR_INDEX_VALUE);
+                Matcher matcherI = patternIJ.matcher(i);
+                Matcher matcherJ = patternIJ.matcher(j);
+                if (matcherI.matches() && matcherJ.matches()) {
+                    String valueIJ = VALUE + i + j;
+                    try {
+                        sum += Double.parseDouble(rb.getString(valueIJ));
+                    } catch (MissingResourceException | NumberFormatException e) {
                         errorLines++;
                     }
-
-                } catch (MissingResourceException | NumberFormatException e) {
+                } else {
                     errorLines++;
                 }
             }
         }
-        sumStr.append(sum);
-        return errorLines;
+        return new Result(sum, errorLines);
+    }
+
+    static class Result {
+        private double sum;
+        private int errorLines;
+
+        public Result(double sum, int errorLines) {
+            this.sum = sum;
+            this.errorLines = errorLines;
+        }
+
+        public Result() {
+        }
+
+        public double getSum() {
+            return sum;
+        }
+
+        public int getErrorLines() {
+            return errorLines;
+        }
+
     }
 
     @Test
     public void testMainScenarioFileIn1() throws FileNotFoundException {
-        StringBuilder stringBuilder = new StringBuilder();
         final String fileName = "in1";
+        Result result = getResult(fileName);
         int expected = 3;
-        final String expectedSumStr = "8.24";
-        Assert.assertEquals(expected, getResult(fileName, stringBuilder));
-        Assert.assertEquals(expectedSumStr, stringBuilder.toString());
+        final double expectedSum = 8.24;
+        Assert.assertEquals(expected, result.getErrorLines());
+        Assert.assertEquals(expectedSum, result.getSum(), 0);
     }
 
     @Test
     public void testMainScenarioFileIn2() throws FileNotFoundException {
-        StringBuilder stringBuilder = new StringBuilder();
         final String fileName = "in2";
+        Result result = getResult(fileName);
         int expected = 9;
-        final String expectedSumStr = "30.242";
-        Assert.assertEquals(expected, getResult(fileName, stringBuilder));
-        Assert.assertEquals(expectedSumStr, stringBuilder.toString());
+        final double expectedSum = 30.242;
+        Assert.assertEquals(expected, result.getErrorLines());
+        Assert.assertEquals(expectedSum, result.getSum(), 0);
     }
 
     @Test(expected = MissingResourceException.class)
-    public void testFileIsNotFound() throws FileNotFoundException {
+    public void testFileIsNotFound1() throws FileNotFoundException {
         final String fileName = "in10";
-        getResult(fileName, new StringBuilder());
+        getResult(fileName);
+    }
+
+    @Test(expected = MissingResourceException.class)
+    public void testFileIsNotFound2() throws FileNotFoundException {
+        final String fileName = "in0";
+        getResult(fileName);
     }
 }

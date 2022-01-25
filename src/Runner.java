@@ -29,7 +29,7 @@ public class Runner {
 
     }
 
-    private static int search(AbstractPurchase[] purchases, AbstractPurchase purchase) {
+    public static int search(AbstractPurchase[] purchases, AbstractPurchase purchase) {
         return Arrays.binarySearch(purchases, purchase);
     }
 

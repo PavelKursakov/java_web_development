@@ -1,5 +1,9 @@
 package by.epam.lab.beans;
 
+import static by.epam.lab.Constants.*;
+
+import by.epam.lab.exceptions.NonPositiveArgumentException;
+
 import java.util.Scanner;
 
 public class Byn implements Comparable<Byn> {
@@ -10,8 +14,12 @@ public class Byn implements Comparable<Byn> {
     }
 
     public Byn(int value) {
+        if (value < 0) {
+            throw new NonPositiveArgumentException();
+        }
         this.value = value;
     }
+
 
     public Byn(Byn byn) {
         this(byn.value);
@@ -21,8 +29,23 @@ public class Byn implements Comparable<Byn> {
         this(sc.nextInt());
     }
 
-    public Byn(String s) {
+    public Byn(String s) throws NumberFormatException {
         this(Integer.parseInt(s));
+    }
+
+    public Byn(int rubs, int coins) {
+        if (!(rubs >= 0 && coins < HUNDRED_FOR_BYN && coins >= 0)) {
+            throw new NonPositiveArgumentException();
+        }
+        this.value = rubs * HUNDRED_FOR_BYN + coins;
+    }
+
+    public int getRubs() {
+        return value / HUNDRED_FOR_BYN;
+    }
+
+    public int getCoins() {
+        return value % HUNDRED_FOR_BYN;
     }
 
     public Byn add(Byn byn) {
@@ -48,7 +71,7 @@ public class Byn implements Comparable<Byn> {
 
     @Override
     public String toString() {
-        return String.format("%d,%02d", value / 100, value % 100);
+        return String.format(FORMAT_FOR_BYN, value / HUNDRED_FOR_BYN, value % HUNDRED_FOR_BYN);
     }
 
 

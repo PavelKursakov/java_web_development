@@ -1,15 +1,22 @@
 package by.epam.lab.beans;
 
-import by.epam.lab.beans.Byn;
-import by.epam.lab.beans.Purchase;
+import by.epam.lab.exceptions.CsvLineException;
+import by.epam.lab.exceptions.NonPositiveArgumentException;
+import by.epam.lab.exceptions.WrongArgumentTypeException;
 
 import static by.epam.lab.Constants.*;
 
 public class PriceDiscountPurchase extends Purchase {
-    private Byn discount;
+    private final Byn discount;
 
     public PriceDiscountPurchase() {
         super();
+        this.discount = new Byn(0);
+    }
+
+    public PriceDiscountPurchase(Purchase purchase, Byn discount) {
+        super(purchase);
+        this.discount = discount;
     }
 
     public PriceDiscountPurchase(String name, Byn price, Byn discount, int numberOfUnits) {
@@ -17,29 +24,25 @@ public class PriceDiscountPurchase extends Purchase {
         this.discount = discount;
     }
 
-    public PriceDiscountPurchase(String[] elements) {
+    public PriceDiscountPurchase(String[] elements) throws CsvLineException {
         super(elements);
-        boolean discountIsCorrect = true;
-        String currentLine = String.join(DELIMITER, elements);
         try {
             if (Integer.parseInt(elements[3]) <= 0) {
-                System.err.println(currentLine + NON_POSITIVE_DISCOUNT);
-                discountIsCorrect = false;
+                throw new NonPositiveArgumentException(NON_POSITIVE_DISCOUNT);
             }
             Byn discountCheck = new Byn(elements[3]);
-            if (discountIsCorrect && discountCheck.compareTo(getPrice()) >= 0) {
-                System.err.println(currentLine + DISCOUNT_EQUAL);
-                discountIsCorrect = false;
+            if (discountCheck.compareTo(getPrice()) >= 0) {
+                throw new NonPositiveArgumentException(DISCOUNT_EQUAL);
             }
         } catch (NumberFormatException e) {
-            System.err.println(currentLine + WRONG_ELEMENT_DISCOUNT);
-            discountIsCorrect = false;
+            throw new WrongArgumentTypeException(WRONG_ELEMENT_DISCOUNT);
         }
-        if (discountIsCorrect) {
-            this.discount = new Byn(elements[3]);
-        } else {
-            throw new NumberFormatException();
-        }
+        this.discount = new Byn(elements[3]);
+    }
+
+    @Override
+    public Purchase getClone() {
+        return new PriceDiscountPurchase(super.getClone(), new Byn(discount));
     }
 
     @Override

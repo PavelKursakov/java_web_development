@@ -4,6 +4,7 @@ import by.epam.lab.beans.Byn;
 import by.epam.lab.beans.PriceDiscountPurchase;
 import by.epam.lab.beans.Purchase;
 import by.epam.lab.beans.PurchaseList;
+import by.epam.lab.exceptions.CsvLineException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ public class TestRunner {
 
     @Test
     public void purchaseListsMethods() {
-        PurchaseList purchaseList = new PurchaseList(CSV_NAME);
+        PurchaseList purchaseList = new PurchaseList(CSV_NAME, new PurchaseComparator());
         Purchase p1 = new Purchase("Milk", new Byn(150), 3);
         Purchase p2 = new PriceDiscountPurchase
                 ("Fish", new Byn(100), new Byn(10), 3);
@@ -57,7 +58,7 @@ public class TestRunner {
         boolean purchaseAreDeleted = purchaseList.deletePurchase(0, 1);
         Assert.assertTrue(purchaseAreDeleted);
 //      Test method sortList
-        PurchaseList purchaseList1 = new PurchaseList(CSV_NAME);
+        PurchaseList purchaseList1 = new PurchaseList(CSV_NAME, new PurchaseComparator());
         List<Purchase> list = new ArrayList<>(purchaseList1.getPurchasesList());
         purchaseList1.sortList();
         Collections.sort(list, new PurchaseComparator());
@@ -71,13 +72,21 @@ public class TestRunner {
     }
 
     @Test
-    public void testGetPurchaseFromFactory() {
-        Scanner sc1 = new Scanner("Milk;150;3");
-        Scanner sc2 = new Scanner("Fish;100;3;10");
+    public void testGetPurchaseList(){
+        PurchaseList purchaseList1 = new PurchaseList(CSV_NAME,new PurchaseComparator());
+        List<Purchase> purchases = purchaseList1.getPurchasesList();
+        purchases.add(new PriceDiscountPurchase());
+        Assert.assertNotEquals(purchaseList1.getPurchasesList(), purchases);
+    }
+
+    @Test
+    public void testGetPurchaseFromFactory() throws CsvLineException {
+        String s1 = "Milk;150;3";
+        String s2 = "Fish;100;3;10";
         Purchase p1 = new Purchase("Milk", new Byn(150), 3);
         Purchase p2 = new PriceDiscountPurchase
                 ("Fish", new Byn(100), new Byn(10), 3);
-        Assert.assertEquals(p1, PurchaseFactory.getPurchaseFromFactory(sc1));
-        Assert.assertEquals(p2, PurchaseFactory.getPurchaseFromFactory(sc2));
+        Assert.assertEquals(p1, PurchaseFactory.getPurchaseFromFactory(s1));
+        Assert.assertEquals(p2, PurchaseFactory.getPurchaseFromFactory(s2));
     }
 }

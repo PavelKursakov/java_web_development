@@ -6,7 +6,7 @@ import by.epam.lab.exceptions.NonPositiveArgumentException;
 
 import java.util.Scanner;
 
-public class Byn implements Comparable<Byn> {
+public final class Byn implements Comparable<Byn> {
     private final int value;
 
     public Byn() {
@@ -15,7 +15,7 @@ public class Byn implements Comparable<Byn> {
 
     public Byn(int value) {
         if (value < 0) {
-            throw new NonPositiveArgumentException();
+            throw new NonPositiveArgumentException(NONE_POSITIVE_ARGUMENT + value);
         }
         this.value = value;
     }

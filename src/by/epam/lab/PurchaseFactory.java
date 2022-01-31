@@ -11,12 +11,12 @@ import static by.epam.lab.Constants.*;
 public class PurchaseFactory {
     private enum PurchaseKind {
         GENERAL_PURCHASE {
-            protected Purchase getPurchase(String[] elements) throws CsvLineException {
+            protected Purchase getPurchase(String[] elements) {
                 return new Purchase(elements);
             }
         },
         PRICE_DISCOUNT {
-            protected Purchase getPurchase(String[] elements) throws CsvLineException {
+            protected Purchase getPurchase(String[] elements) {
                 return new PriceDiscountPurchase(elements);
             }
         };
@@ -40,8 +40,6 @@ public class PurchaseFactory {
             throw new CsvLineException(csvLine, WRONG_ARGUMENT_MESSAGE);
         } catch (NumberFormatException e) {
             throw new CsvLineException(csvLine, WRONG_ARGUMENT_PRICE_AND_UNITS);
-        } catch (CsvLineException e) {
-            throw new CsvLineException(csvLine, EMPTY_ELEMENT, NAME);
         } catch (NonPositiveArgumentException e) {
             throw new CsvLineException(csvLine, e.getWrongField());
         } catch (WrongArgumentTypeException e) {

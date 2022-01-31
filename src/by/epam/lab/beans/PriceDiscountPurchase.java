@@ -5,7 +5,7 @@ import by.epam.lab.exceptions.WrongArgumentTypeException;
 
 import static by.epam.lab.Constants.*;
 
-public class PriceDiscountPurchase extends Purchase {
+public final class PriceDiscountPurchase extends Purchase {
     private final Byn discount;
 
     public PriceDiscountPurchase() {

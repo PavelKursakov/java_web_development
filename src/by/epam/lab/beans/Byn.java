@@ -29,15 +29,26 @@ public class Byn implements Comparable<Byn> {
         this(sc.nextInt());
     }
 
-    public Byn(String s) throws NumberFormatException {
+    /**
+     * @throws NumberFormatException if wrong format of s.
+     */
+
+    public Byn(String s) {
         this(Integer.parseInt(s));
     }
 
     public Byn(int rubs, int coins) {
-        if (!(rubs >= 0 && coins < HUNDRED_FOR_BYN && coins >= 0)) {
+        this(new Byn(getValidValue(rubs, coins)));
+    }
+
+    private static int getValidValue(int rubs, int coins) {
+        if (rubs < 0) {
             throw new NonPositiveArgumentException();
         }
-        this.value = rubs * HUNDRED_FOR_BYN + coins;
+        if (coins <= 0) {
+            throw new NonPositiveArgumentException();
+        }
+        return rubs * HUNDRED_FOR_BYN + coins;
     }
 
     public int getRubs() {

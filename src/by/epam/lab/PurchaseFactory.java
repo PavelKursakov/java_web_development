@@ -2,39 +2,50 @@ package by.epam.lab;
 
 import by.epam.lab.beans.PriceDiscountPurchase;
 import by.epam.lab.beans.Purchase;
+import by.epam.lab.exceptions.CsvLineException;
+import by.epam.lab.exceptions.NonPositiveArgumentException;
+import by.epam.lab.exceptions.WrongArgumentTypeException;
 
 import static by.epam.lab.Constants.*;
 
-import java.util.Scanner;
-
 public class PurchaseFactory {
-    public enum PurchaseKind {
+    private enum PurchaseKind {
         GENERAL_PURCHASE {
-            Purchase getPurchase(String[] elements) {
+            protected Purchase getPurchase(String[] elements) throws CsvLineException {
                 return new Purchase(elements);
             }
         },
         PRICE_DISCOUNT {
-            Purchase getPurchase(String[] elements) {
+            protected Purchase getPurchase(String[] elements) throws CsvLineException {
                 return new PriceDiscountPurchase(elements);
             }
         };
 
-        abstract Purchase getPurchase(String[] elements);
+        abstract protected Purchase getPurchase(String[] elements) throws CsvLineException;
     }
 
-    public static Purchase getPurchaseFromFactory(Scanner sc) {
-        Purchase purchase = null;
-        String s = sc.nextLine();
-        String[] elements = s.split(DELIMITER);
-        if (elements.length < MIN_PURCHASE_LENGTH || elements.length > MAX_PURCHASE_LENGTH) {
-            System.err.println(s + WRONG_ARGUMENT_MESSAGE);
+    private static PurchaseKind getPurchaseKind (int elementsLength) {
+        PurchaseKind purchaseKind = PurchaseKind.GENERAL_PURCHASE;
+        if (elementsLength == MAX_PURCHASE_LENGTH){
+            purchaseKind = PurchaseKind.PRICE_DISCOUNT;
         }
-        if (elements.length == MAX_PURCHASE_LENGTH) {
-            purchase = PurchaseKind.PRICE_DISCOUNT.getPurchase(elements);
-        } else if (elements.length == MIN_PURCHASE_LENGTH) {
-            purchase = PurchaseKind.GENERAL_PURCHASE.getPurchase(elements);
+        return purchaseKind;
+    }
+
+    public static Purchase getPurchaseFromFactory(String csvLine) throws CsvLineException {
+        String[] elements = csvLine.split(DELIMITER);
+        try {
+            return getPurchaseKind(elements.length).getPurchase(elements);
+        } catch (IndexOutOfBoundsException e) {
+            throw new CsvLineException(csvLine, WRONG_ARGUMENT_MESSAGE);
+        } catch (NumberFormatException e) {
+            throw new CsvLineException(csvLine, WRONG_ARGUMENT_PRICE_AND_UNITS);
+        } catch (CsvLineException e) {
+            throw new CsvLineException(csvLine, EMPTY_ELEMENT, NAME);
+        } catch (NonPositiveArgumentException e) {
+            throw new CsvLineException(csvLine, e.getWrongField());
+        } catch (WrongArgumentTypeException e) {
+            throw new CsvLineException(csvLine, e.getWrongField());
         }
-        return purchase;
     }
 }

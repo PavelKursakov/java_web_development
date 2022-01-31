@@ -1,6 +1,5 @@
 package by.epam.lab.beans;
 
-import by.epam.lab.exceptions.CsvLineException;
 import by.epam.lab.exceptions.NonPositiveArgumentException;
 import by.epam.lab.exceptions.WrongArgumentTypeException;
 
@@ -10,34 +9,34 @@ public class PriceDiscountPurchase extends Purchase {
     private final Byn discount;
 
     public PriceDiscountPurchase() {
-        super();
-        this.discount = new Byn(0);
+        throw new IllegalStateException(EMPTY_PURCHASE);
     }
 
     public PriceDiscountPurchase(Purchase purchase, Byn discount) {
-        super(purchase);
-        this.discount = discount;
+        this(purchase.getName(), purchase.getPrice(), purchase.getNumberOfUnits(), discount);
     }
 
-    public PriceDiscountPurchase(String name, Byn price, Byn discount, int numberOfUnits) {
+    public PriceDiscountPurchase(String name, Byn price, int numberOfUnits, Byn discount) {
         super(name, price, numberOfUnits);
+        if (discount.compareTo(getPrice()) >= 0) {
+            throw new WrongArgumentTypeException(DISCOUNT_EQUAL);
+        }
+        if (discount.compareTo(new Byn(0)) == 0) {
+            throw new NonPositiveArgumentException(NON_POSITIVE_DISCOUNT);
+        }
         this.discount = discount;
     }
 
-    public PriceDiscountPurchase(String[] elements) throws CsvLineException {
-        super(elements);
-        try {
-            if (Integer.parseInt(elements[3]) <= 0) {
-                throw new NonPositiveArgumentException(NON_POSITIVE_DISCOUNT);
-            }
-            Byn discountCheck = new Byn(elements[3]);
-            if (discountCheck.compareTo(getPrice()) >= 0) {
-                throw new NonPositiveArgumentException(DISCOUNT_EQUAL);
-            }
-        } catch (NumberFormatException e) {
-            throw new WrongArgumentTypeException(WRONG_ELEMENT_DISCOUNT);
+    public PriceDiscountPurchase(String[] elements) {
+        this(new Purchase(getArrayForPurchase(elements)), new Byn(elements[3]));
+    }
+
+    private static String[] getArrayForPurchase(String[] strings) {
+        String[] elements = null;
+        if (strings.length == MAX_PURCHASE_LENGTH) {
+            elements = new String[]{strings[0], strings[1], strings[2]};
         }
-        this.discount = new Byn(elements[3]);
+        return elements;
     }
 
     @Override

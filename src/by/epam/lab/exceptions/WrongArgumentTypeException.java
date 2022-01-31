@@ -1,6 +1,6 @@
 package by.epam.lab.exceptions;
 
-public class WrongArgumentTypeException extends IllegalArgumentException{
+public class WrongArgumentTypeException extends IllegalArgumentException {
     private final String wrongField;
 
     public WrongArgumentTypeException() {

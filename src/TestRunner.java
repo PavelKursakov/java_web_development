@@ -1,4 +1,3 @@
-import by.epam.lab.comparators.PurchaseComparator;
 import by.epam.lab.PurchaseFactory;
 import by.epam.lab.beans.Byn;
 import by.epam.lab.beans.PriceDiscountPurchase;
@@ -7,10 +6,6 @@ import by.epam.lab.beans.PurchaseList;
 import by.epam.lab.exceptions.CsvLineException;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.*;
-
-import static by.epam.lab.Constants.*;
 
 public class TestRunner {
 
@@ -31,52 +26,50 @@ public class TestRunner {
     public void testGetCost() {
         Purchase generalPurchase = new Purchase("Milk", new Byn(250), 2);
         Purchase priceDiscountPurchase = new PriceDiscountPurchase
-                ("Coffee", new Byn(100), new Byn(20), 3);
+                ("Coffee", new Byn(100), 3, new Byn(20));
         Assert.assertEquals(new Byn(500), generalPurchase.getCost());
         Assert.assertEquals(new Byn(240), priceDiscountPurchase.getCost());
     }
 
     @Test
     public void purchaseListsMethods() {
-        PurchaseList purchaseList = new PurchaseList(CSV_NAME, new PurchaseComparator());
+        PurchaseList purchaseList = new PurchaseList();
         Purchase p1 = new Purchase("Milk", new Byn(150), 3);
         Purchase p2 = new PriceDiscountPurchase
-                ("Fish", new Byn(100), new Byn(10), 3);
+                ("Fish", new Byn(100), 3, new Byn(10));
 //        Test method addPurchase
-        purchaseList.addPurchase(1, p1);
-        purchaseList.addPurchase(120, p2);
-        Assert.assertEquals(purchaseList.getPurchasesList().get(1), p1);
-        Assert.assertEquals(purchaseList.getPurchasesList().
-                get(purchaseList.getPurchasesList().size() - 1), p2);
+        purchaseList.addPurchase(120, p1);
+        purchaseList.addPurchase(1, p2);
+        System.out.println(purchaseList);
+        String[] purchases = purchaseList.toString().split("\n");
+        Assert.assertEquals(purchases[0], p1.toString());
+        Assert.assertEquals(purchases[purchases.length - 1], p2.toString());
 //      Test method getTotalCost
-        Assert.assertEquals(new Byn(5412), purchaseList.getTotalCost());
+        Assert.assertEquals(new Byn(720), purchaseList.getTotalCost());
 //        Test method search
-        boolean purchase = purchaseList.searchElement
-                (new Purchase("Oil", new Byn(50), 9));
-        Assert.assertTrue(purchase);
+        int purchaseID = purchaseList.searchElement
+                (new Purchase("Fish", new Byn(90), 3));
+        Assert.assertEquals(p1.toString(), purchases[purchaseID]);
 //      Test method delete
-        boolean purchaseAreDeleted = purchaseList.deletePurchase(0, 1);
-        Assert.assertTrue(purchaseAreDeleted);
+        purchaseList.deletePurchase(0, 1);
+        Assert.assertTrue(purchaseList.searchElement(p1) >= 0);
 //      Test method sortList
-        PurchaseList purchaseList1 = new PurchaseList(CSV_NAME, new PurchaseComparator());
-        List<Purchase> list = new ArrayList<>(purchaseList1.getPurchasesList());
+        PurchaseList purchaseList1 = new PurchaseList();
+        Purchase purchaseWithMaxCost = new Purchase("Milk", new Byn(15000), 5);
+        Purchase purchaseWithMinCost = new Purchase("Coffee", new Byn(1), 1);
+        Purchase purchaseWithMeanCost = new Purchase("Oil", new Byn(500), 3);
+//      Add purchase with Max cost into the first position of collection
+        purchaseList1.addPurchase(0, purchaseWithMaxCost);
+//      Add purchase with Min cost into the mid of collection
+        purchaseList1.addPurchase(1, purchaseWithMinCost);
+//      Add purchase with Mean cost into the last position of collection
+        purchaseList1.addPurchase(2, purchaseWithMeanCost);
         purchaseList1.sortList();
-        Collections.sort(list, new PurchaseComparator());
-        boolean purchasesAreEqual = true;
-        for (int i = 0; i < purchaseList1.getPurchasesList().size(); i++) {
-            if (!purchaseList1.getPurchasesList().get(i).equals(list.get(i))) {
-                purchasesAreEqual = false;
-            }
-        }
-        Assert.assertTrue(purchasesAreEqual);
-    }
+        String[] strings = purchaseList1.toString().split("\n");
+        Assert.assertEquals(strings[0], purchaseWithMinCost.toString());
+        Assert.assertEquals(strings[1], purchaseWithMeanCost.toString());
+        Assert.assertEquals(strings[2], purchaseWithMaxCost.toString());
 
-    @Test
-    public void testGetPurchaseList(){
-        PurchaseList purchaseList1 = new PurchaseList(CSV_NAME,new PurchaseComparator());
-        List<Purchase> purchases = purchaseList1.getPurchasesList();
-        purchases.add(new PriceDiscountPurchase());
-        Assert.assertNotEquals(purchaseList1.getPurchasesList(), purchases);
     }
 
     @Test
@@ -85,7 +78,7 @@ public class TestRunner {
         String s2 = "Fish;100;3;10";
         Purchase p1 = new Purchase("Milk", new Byn(150), 3);
         Purchase p2 = new PriceDiscountPurchase
-                ("Fish", new Byn(100), new Byn(10), 3);
+                ("Fish", new Byn(100), 3, new Byn(10));
         Assert.assertEquals(p1, PurchaseFactory.getPurchaseFromFactory(s1));
         Assert.assertEquals(p2, PurchaseFactory.getPurchaseFromFactory(s2));
     }

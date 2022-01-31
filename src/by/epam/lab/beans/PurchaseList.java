@@ -15,6 +15,11 @@ public class PurchaseList {
     private List<Purchase> purchasesList;
     private final Comparator<Purchase> comparator;
 
+    public PurchaseList() {
+        this.purchasesList = new ArrayList<>();
+        this.comparator = new PurchaseComparator();
+    }
+
     public PurchaseList(String csvName, Comparator<Purchase> comparator) {
         this.comparator = comparator;
         purchasesList = new ArrayList<>();
@@ -22,28 +27,17 @@ public class PurchaseList {
             sc.useLocale(Locale.ENGLISH);
             while (sc.hasNextLine()) {
                 String s = sc.nextLine();
-                Purchase purchase = null;
                 try {
-                    purchase = PurchaseFactory.getPurchaseFromFactory(s);
+                    Purchase purchase = PurchaseFactory.getPurchaseFromFactory(s);
+                    purchasesList.add(purchase);
                 } catch (CsvLineException e) {
                     System.err.println(e);
-                }
-                if (purchase != null) {
-                    purchasesList.add(purchase);
                 }
             }
         } catch (FileNotFoundException e) {
             System.err.println(FILE_NOT_FOUND);
             purchasesList = new ArrayList<>();
         }
-    }
-
-    public List<Purchase> getPurchasesList() {
-        List<Purchase> purchases = new ArrayList<>();
-        for (Purchase purchase: purchasesList) {
-            purchases.add(purchase.getClone());
-        }
-        return purchases;
     }
 
     public void addPurchase(int index, Purchase purchase) {
@@ -57,17 +51,20 @@ public class PurchaseList {
         listIsSorted = false;
     }
 
-    public boolean deletePurchase(int indexFrom, int indexTo) {
-        boolean purchasesAreDeleted = false;
-        if (indexFrom < 0 || indexFrom >= purchasesList.size()) {
-            System.out.println(WRONG_INDEX + indexFrom);
-        } else if (indexTo < 0 || indexTo >= purchasesList.size()) {
-            System.out.println(WRONG_INDEX + indexTo);
-        } else {
-            purchasesList.removeAll(purchasesList.subList(indexFrom,indexTo));
-            purchasesAreDeleted = true;
+    public void deletePurchase(int indexFrom, int indexTo) {
+        if (indexFrom < 0) {
+            indexFrom = 0;
         }
-        return purchasesAreDeleted;
+        if (indexFrom >= purchasesList.size()) {
+            indexFrom = purchasesList.size() - 1;
+        }
+        if (indexTo < 0) {
+            indexTo = 0;
+        }
+        if (indexTo >= purchasesList.size()) {
+            indexTo = purchasesList.size() - 1;
+        }
+        purchasesList.subList(indexFrom, indexTo).clear();
     }
 
     public Byn getTotalCost() {
@@ -83,21 +80,18 @@ public class PurchaseList {
         listIsSorted = true;
     }
 
-    public boolean searchElement(Purchase purchase) {
-        boolean elementIsFound = false;
+    public int searchElement(Purchase purchase) {
         if (!listIsSorted) {
             sortList();
         }
-        int index = Collections.binarySearch(purchasesList, purchase, new PurchaseComparator());
-        if (index >= 0) {
-            elementIsFound = true;
-        }
-        return elementIsFound;
+        return Collections.binarySearch(purchasesList, purchase, new PurchaseComparator());
     }
 
-    public void show() {
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
         for (Purchase purchase : purchasesList) {
-            System.out.println(purchase);
+            stringBuilder.append(purchase).append("\n");
         }
+        return stringBuilder.toString();
     }
 }

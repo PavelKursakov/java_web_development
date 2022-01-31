@@ -1,7 +1,7 @@
 package by.epam.lab.beans;
 
-import by.epam.lab.exceptions.CsvLineException;
 import by.epam.lab.exceptions.NonPositiveArgumentException;
+import by.epam.lab.exceptions.WrongArgumentTypeException;
 
 import java.util.Objects;
 
@@ -13,35 +13,27 @@ public class Purchase implements Comparable<Purchase> {
     private final int numberOfUnits;
 
     public Purchase() {
-        this(null, new Byn(0), 0);
+        throw new IllegalStateException(EMPTY_PURCHASE);
     }
 
     public Purchase(Purchase purchase) {
-        this.name = purchase.name;
-        this.price = new Byn(purchase.price);
-        this.numberOfUnits = purchase.numberOfUnits;
+        this(purchase.name, purchase.price, purchase.numberOfUnits);
     }
 
     public Purchase(String name, Byn price, int numberOfUnits) {
+        if (name.isEmpty()) {
+            throw new WrongArgumentTypeException(EMPTY_NAME);
+        }
+        if (price.compareTo(new Byn(0)) <= 0 || numberOfUnits <= 0) {
+            throw new NonPositiveArgumentException(NONE_POSITIVE_ARGUMENT_PRICE_AND_UNITS);
+        }
         this.name = name;
         this.price = price;
         this.numberOfUnits = numberOfUnits;
     }
 
-    public Purchase(String[] elements) throws CsvLineException {
-        String currentLine = String.join(DELIMITER, elements);
-        if (elements[0].isEmpty()) {
-            throw new CsvLineException(currentLine, EMPTY_ELEMENT, NAME);
-        }
-        if (Integer.parseInt(elements[1]) <= 0 || Integer.parseInt(elements[2]) <= 0) {
-            throw new NonPositiveArgumentException(NONE_POSITIVE_ARGUMENT_PRICE_AND_UNITS);
-        }
-        if (elements.length > MAX_PURCHASE_LENGTH) {
-            throw new IndexOutOfBoundsException();
-        }
-        this.name = elements[0];
-        this.price = new Byn(elements[1]);
-        this.numberOfUnits = Integer.parseInt(elements[2]);
+    public Purchase(String[] elements) {
+        this(getArrayForPurchase(elements));
     }
 
     public String getName() {
@@ -59,12 +51,20 @@ public class Purchase implements Comparable<Purchase> {
     public Byn getCost() {
         return price.mull(numberOfUnits);
     }
-    public Purchase getClone (){
+
+    public Purchase getClone() {
         return new Purchase(name, new Byn(getPrice()), numberOfUnits);
     }
 
     protected String filedToString() {
         return name + DELIMITER + price + DELIMITER + numberOfUnits;
+    }
+
+    private static Purchase getArrayForPurchase(String[] strings) {
+        if (strings.length != MIN_PURCHASE_LENGTH) {
+            throw new IndexOutOfBoundsException(WRONG_ARGUMENT_MESSAGE);
+        }
+        return new Purchase(strings[0], new Byn(strings[1]), Integer.parseInt(strings[2]));
     }
 
     @Override

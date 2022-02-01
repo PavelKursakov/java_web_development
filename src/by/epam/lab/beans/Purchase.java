@@ -21,7 +21,7 @@ public class Purchase implements Comparable<Purchase> {
     }
 
     public Purchase(String name, Byn price, int numberOfUnits) {
-        if (name.isEmpty()) {
+        if (name.trim().isEmpty()) {
             throw new WrongArgumentTypeException(EMPTY_NAME);
         }
         if (price.compareTo(new Byn(0)) <= 0 || numberOfUnits <= 0) {
@@ -57,7 +57,8 @@ public class Purchase implements Comparable<Purchase> {
     }
 
     protected String filedToString() {
-        return name + DELIMITER + price + DELIMITER + numberOfUnits;
+        return getClass().getSimpleName() + DELIMITER + name +
+                DELIMITER + price + DELIMITER + numberOfUnits;
     }
 
     private static Purchase getArrayForPurchase(String[] strings) {
@@ -75,13 +76,5 @@ public class Purchase implements Comparable<Purchase> {
     @Override
     public int compareTo(Purchase purchase) {
         return this.getCost().compareTo(purchase.getCost());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Purchase purchase = (Purchase) o;
-        return Objects.equals(name, purchase.name) && Objects.equals(price, purchase.price);
     }
 }

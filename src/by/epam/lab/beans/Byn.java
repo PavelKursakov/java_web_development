@@ -38,7 +38,7 @@ public final class Byn implements Comparable<Byn> {
     }
 
     public Byn(int rubs, int coins) {
-        this(new Byn(getValidValue(rubs, coins)));
+        this(getValidValue(rubs, coins));
     }
 
     private static int getValidValue(int rubs, int coins) {

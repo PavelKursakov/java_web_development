@@ -32,11 +32,10 @@ public final class PriceDiscountPurchase extends Purchase {
     }
 
     private static String[] getArrayForPurchase(String[] strings) {
-        String[] elements = null;
-        if (strings.length == MAX_PURCHASE_LENGTH) {
-            elements = new String[]{strings[0], strings[1], strings[2]};
+        if (strings.length != MAX_PURCHASE_LENGTH) {
+            throw new IndexOutOfBoundsException(WRONG_ARGUMENT_MESSAGE);
         }
-        return elements;
+        return new String[]{strings[0], strings[1], strings[2]};
     }
 
     @Override

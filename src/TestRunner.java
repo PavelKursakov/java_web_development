@@ -51,8 +51,8 @@ public class TestRunner {
                 (new Purchase("Fish", new Byn(90), 3));
         Assert.assertEquals(p1.toString(), purchases[purchaseID]);
 //      Test method delete
-        purchaseList.deletePurchase(0, 1);
-        Assert.assertTrue(purchaseList.searchElement(p1) >= 0);
+        int numberOfDeletedElements = purchaseList.deletePurchase(0, 1);
+        Assert.assertEquals(1,numberOfDeletedElements);
 //      Test method sortList
         PurchaseList purchaseList1 = new PurchaseList();
         Purchase purchaseWithMaxCost = new Purchase("Milk", new Byn(15000), 5);
@@ -79,7 +79,7 @@ public class TestRunner {
         Purchase p1 = new Purchase("Milk", new Byn(150), 3);
         Purchase p2 = new PriceDiscountPurchase
                 ("Fish", new Byn(100), 3, new Byn(10));
-        Assert.assertEquals(p1, PurchaseFactory.getPurchaseFromFactory(s1));
-        Assert.assertEquals(p2, PurchaseFactory.getPurchaseFromFactory(s2));
+        Assert.assertEquals(p1.toString(), PurchaseFactory.getPurchaseFromFactory(s1).toString());
+        Assert.assertEquals(p2.toString(), PurchaseFactory.getPurchaseFromFactory(s2).toString());
     }
 }

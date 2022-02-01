@@ -40,10 +40,8 @@ public class PurchaseFactory {
             throw new CsvLineException(csvLine, WRONG_ARGUMENT_MESSAGE);
         } catch (NumberFormatException e) {
             throw new CsvLineException(csvLine, WRONG_ARGUMENT_PRICE_AND_UNITS);
-        } catch (NonPositiveArgumentException e) {
-            throw new CsvLineException(csvLine, e.getWrongField());
-        } catch (WrongArgumentTypeException e) {
-            throw new CsvLineException(csvLine, e.getWrongField());
+        } catch (NonPositiveArgumentException | WrongArgumentTypeException e) {
+            throw new CsvLineException(csvLine, e.toString());
         }
     }
 }

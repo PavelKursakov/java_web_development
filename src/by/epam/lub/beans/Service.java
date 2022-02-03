@@ -3,7 +3,7 @@ package by.epam.lub.beans;
 import by.epam.lub.Constants;
 import by.epam.lub.enums.RoundMethod;
 
-public class Service extends AbstractItem {
+public class Service implements Priceable {
     private String serviceName;
     private Byn serviceCost;
     private int numberOfUsers;
@@ -43,11 +43,12 @@ public class Service extends AbstractItem {
 
     @Override
     public Byn getPrice() {
-        return serviceCost.div(numberOfUsers, RoundMethod.ROUND,0);
+        return serviceCost.mul(1.0 / numberOfUsers, RoundMethod.CEIL, 0);
     }
 
     @Override
     public String toString() {
-        return serviceName + Constants.DELIMITER + serviceCost + Constants.DELIMITER + numberOfUsers;
+        return serviceName + Constants.DELIMITER + serviceCost + Constants.DELIMITER +
+                numberOfUsers + Constants.DELIMITER + getPrice();
     }
 }

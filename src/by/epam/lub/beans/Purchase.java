@@ -1,24 +1,26 @@
 package by.epam.lub.beans;
+
 import by.epam.lub.enums.RoundMethod;
 
 import static by.epam.lub.Constants.*;
-public class Purchase implements Comparable<Purchase> {
-    private AbstractItem item;
+
+public class Purchase {
+    private Priceable item;
     private Number quantityOfItem;
 
     public Purchase() {
     }
 
-    public Purchase(AbstractItem item, Number quantityOfItem) {
+    public Purchase(Priceable item, Number quantityOfItem) {
         this.item = item;
         this.quantityOfItem = quantityOfItem;
     }
 
-    public AbstractItem getItem() {
+    public Priceable getItem() {
         return item;
     }
 
-    public void setItem(AbstractItem item) {
+    public void setItem(Priceable item) {
         this.item = item;
     }
 
@@ -31,19 +33,12 @@ public class Purchase implements Comparable<Purchase> {
     }
 
     public Byn getCost() {
-        return quantityOfItem.getClass() == Double.class ?
-                item.getPrice().mul((double) quantityOfItem, RoundMethod.ROUND, 0) :
-                item.getPrice().mul((int) quantityOfItem, RoundMethod.ROUND, 0);
+        return item.getPrice().mul(quantityOfItem.doubleValue(), RoundMethod.ROUND, 0);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + DELIMITER + item +
                 DELIMITER + quantityOfItem + DELIMITER + getCost();
-    }
-
-    @Override
-    public int compareTo(Purchase purchase) {
-        return this.getCost().compareTo(purchase.getCost());
     }
 }

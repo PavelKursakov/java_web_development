@@ -2,7 +2,7 @@ package by.epam.lub.beans;
 
 import by.epam.lub.Constants;
 
-public class Product extends AbstractItem {
+public class Product implements Priceable {
     private String name;
     private Byn price;
 
@@ -32,10 +32,10 @@ public class Product extends AbstractItem {
 
     @Override
     public String toString() {
-        return fieldsToString();
+        return fieldsToString() + Constants.DELIMITER + getPrice();
     }
 
-    public String fieldsToString(){
+    public String fieldsToString() {
         return name + Constants.DELIMITER + price;
     }
 }

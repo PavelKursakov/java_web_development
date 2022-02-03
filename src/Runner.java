@@ -14,10 +14,9 @@ public class Runner {
                 ("Sugar", new Byn(280), new Byn(10)), 60);
         PurchaseUtils pu4 = new PurchaseUtils(new Purchase(new Service("Gym workout",
                 new Byn(7560), 5), 2.25));
-        Purchase p4 = pu4.getPurchase();
-        pu4.printPurchase();
+        Priceable p4 = pu4.getPurchase().getItem();
+        System.out.println(p4);
         pu4.printCost();
-        Purchase[] purchases = {p1, p3, p4};
-        pu2.printSameCost(purchases);
+        pu2.printSameCost(p1, p3, pu4.getPurchase());
     }
 }

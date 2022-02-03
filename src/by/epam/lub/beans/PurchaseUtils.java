@@ -1,10 +1,9 @@
 package by.epam.lub.beans;
 
-import java.util.Arrays;
 import static by.epam.lub.Constants.*;
 
 public class PurchaseUtils {
-    private final Purchase purchase;
+    private Purchase purchase;
 
     public PurchaseUtils() {
         this(null);
@@ -23,29 +22,33 @@ public class PurchaseUtils {
     }
 
     public void printCost() {
-        System.out.println(COST + purchase.getCost());
+        System.out.println(COST + purchase.getCost() + BYN);
     }
 
     public void printCostDiff(Purchase p) {
-        int xxx = purchase.compareTo(p);
-        if (xxx > 0) {
-            System.out.println(POSITIVE + DIFF + new Byn(xxx));
+        String diffPurchase = EMPTY_STRING;
+        Byn cost1 = purchase.getCost();
+        Byn cost2 = p.getCost();
+        int diff = cost1.compareTo(cost2);
+        Byn diffCost = new Byn(0);
+        if (diff > 0) {
+            diffCost = cost1.sub(cost2);
+            diffPurchase = POSITIVE;
+        } else if (diff < 0) {
+            diffCost = cost2.sub(cost1);
+            diffPurchase = NEGATIVE;
         }
-        if (xxx < 0) {
-            System.out.println(NEGATIVE + DIFF + new Byn(xxx));
-        }
-        if (xxx == 0) {
-            System.out.println(EMPTY_STRING + DIFF + new Byn(xxx));
-        }
+        System.out.println(diffPurchase + DIFF + diffCost);
     }
 
-    public void printSameCost(Purchase[] purchases) {
-        Arrays.sort(purchases);
-        int index = Arrays.binarySearch(purchases, purchase);
-        if (index < 0) {
-            System.out.println(PURCHASE_IS_NOT_FOUND);
-        } else {
-            System.out.println(PURCHASE_WITH_SAME_COST + purchases[index]);
+    public void printSameCost(Purchase... purchases) {
+        boolean purchaseWasFound = false;
+        for (Purchase purchase1 : purchases) {
+            if (purchase.getCost().compareTo(purchase1.getCost()) == 0) {
+                purchaseWasFound = true;
+                break;
+            }
         }
+        System.out.println(purchaseWasFound ? PURCHASE_WITH_SAME_COST : PURCHASE_IS_NOT_FOUND);
     }
 }

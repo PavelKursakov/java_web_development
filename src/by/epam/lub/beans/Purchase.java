@@ -4,23 +4,23 @@ import by.epam.lub.enums.RoundMethod;
 
 import static by.epam.lub.Constants.*;
 
-public class Purchase {
-    private Priceable item;
-    private Number quantityOfItem;
+public class Purchase<T extends Priceable, N extends Number> {
+    private T item;
+    private N quantityOfItem;
 
     public Purchase() {
     }
 
-    public Purchase(Priceable item, Number quantityOfItem) {
+    public Purchase(T item, N quantityOfItem) {
         this.item = item;
         this.quantityOfItem = quantityOfItem;
     }
 
-    public Priceable getItem() {
+    public T getItem() {
         return item;
     }
 
-    public void setItem(Priceable item) {
+    public void setItem(T item) {
         this.item = item;
     }
 
@@ -28,7 +28,7 @@ public class Purchase {
         return quantityOfItem;
     }
 
-    public void setQuantityOfItem(double quantityOfItem) {
+    public void setQuantityOfItem(N quantityOfItem) {
         this.quantityOfItem = quantityOfItem;
     }
 

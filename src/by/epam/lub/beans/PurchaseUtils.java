@@ -2,18 +2,18 @@ package by.epam.lub.beans;
 
 import static by.epam.lub.Constants.*;
 
-public class PurchaseUtils {
-    private Purchase purchase;
+public class PurchaseUtils<T extends Priceable, N extends Number> {
+    private Purchase<T, N> purchase;
 
     public PurchaseUtils() {
         this(null);
     }
 
-    public PurchaseUtils(Purchase purchase) {
+    public PurchaseUtils(Purchase<T, N> purchase) {
         this.purchase = purchase;
     }
 
-    public Purchase getPurchase() {
+    public Purchase<T, N> getPurchase() {
         return purchase;
     }
 
@@ -25,7 +25,7 @@ public class PurchaseUtils {
         System.out.println(COST + purchase.getCost() + BYN);
     }
 
-    public void printCostDiff(Purchase p) {
+    public <E extends Purchase<? extends Priceable, ? extends Number>> void printCostDiff(E p) {
         String diffPurchase = EMPTY_STRING;
         Byn cost1 = purchase.getCost();
         Byn cost2 = p.getCost();
@@ -41,9 +41,11 @@ public class PurchaseUtils {
         System.out.println(diffPurchase + DIFF + diffCost);
     }
 
-    public void printSameCost(Purchase... purchases) {
+    @SafeVarargs
+    public final <E extends Purchase<? extends Priceable, ? extends Number>>
+    void printSameCost(E... purchases) {
         boolean purchaseWasFound = false;
-        for (Purchase purchase1 : purchases) {
+        for (E purchase1 : purchases) {
             if (purchase.getCost().compareTo(purchase1.getCost()) == 0) {
                 purchaseWasFound = true;
                 break;

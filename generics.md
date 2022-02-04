@@ -107,6 +107,19 @@ private T value = new T();
 
 8) Почему нельзя создать `generic-поле`?  
 **Ответ.** Статическое поле класса - это переменная уровня класса, совместно используемая всеми нестатическими объектами класса. Следовательно, статические поля параметров типа не допускаются.  
+Пример:  
+```java
+class FailedTwo<T1, T2> {
+    static T1 value;
+    T2 id;
+    static T1 takeValue() {
+        return value;
+    }
+    static void use() {
+        System.out.print(id);
+    }
+}
+```
 **Источник.**  https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html  
 
 9) Почему статический метод не может иметь `generic-параметр`?  
@@ -152,17 +165,19 @@ public <T3> void make2() { … }
 В данном примере методы `make1` и `make2` определены как обобщенные их синтаксически правильный вызов будет выглядеть следующим образом:  
 ```java
 class Info {
-public <T1> Info() { … }
-public <T2> Info(T2 t2) { … }
-public <T1> void make1(T1 t1) { … }
-public <T3> void make2() { … }
+    public <T1> Info() { …}
+
+    public <T2> Info(T2 t2) { …}
+
+    public <T1> void make1(T1 t1) { …}
+
+    public <T3> void make2() { …}
 
     public static void main(String[] args) {
-        Info info1 = new <T1>Info();
-        Info info2 = new Info(new T2());
-        String making = "I'm making something";
-        info1.make1(making); //implicit generic <String>
-        info2.make2();
+        Info i1 = new <Integer>Info();
+        Info i2 = new Info(new Integer(2));
+        i2.make1(new Integer(2));
+        i1.make2();
     }
 }
 ```

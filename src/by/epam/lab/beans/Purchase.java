@@ -1,7 +1,5 @@
 package by.epam.lab.beans;
 
-import by.epam.lab.Constants;
-
 import static by.epam.lab.Constants.*;
 
 public class Purchase {

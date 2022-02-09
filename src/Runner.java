@@ -89,7 +89,7 @@ public class Runner {
 
     private static <K, V> void printMap(Map<K, V> currentMap, String message) {
         System.out.println(TABULATION + message);
-        for (Map.Entry<?, ?> entry : currentMap.entrySet()) {
+        for (Map.Entry<K, V> entry : currentMap.entrySet()) {
             System.out.println(entry.getKey() + COLON + entry.getValue());
         }
         System.out.println();

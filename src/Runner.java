@@ -1,5 +1,4 @@
 import by.epam.lub.comparators.NumComparator;
-import by.epam.lub.beans.LenNum;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,7 +9,7 @@ import static by.epam.lub.constants.Constants.*;
 public class Runner {
     public static void main(String[] args) {
         try (Scanner sc = new Scanner(new FileReader(FILE_NAME))) {
-            Set<LenNum> lenNumSet = new HashSet<>();
+            Map<Integer, Integer> lenNumMap = new HashMap<>();
             while (sc.hasNextLine()) {
                 String currentString = sc.nextLine();
                 String[] coordinates = currentString.split(REGEX_FOR_LINE);
@@ -19,13 +18,14 @@ public class Runner {
                 double x2 = Double.parseDouble(coordinates[INDEX_X2]);
                 double y2 = Double.parseDouble(coordinates[INDEX_Y2]);
                 int len = (int) Math.round(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
-                lenNumSet.add(new LenNum(len));
+                int num = lenNumMap.get(len) != null ? lenNumMap.get(len) + 1 : 1;
+                lenNumMap.put(len, num);
             }
-            List<LenNum> lenNumList = new ArrayList<>(lenNumSet);
+            List<Map.Entry<Integer, Integer>> lenNumList = new ArrayList<>(lenNumMap.entrySet());
             Collections.sort(lenNumList, new NumComparator());
 
-            for (LenNum lenNum : lenNumList) {
-                System.out.println(lenNum);
+            for (Map.Entry<Integer, Integer> entry : lenNumList) {
+                System.out.println(entry.getKey() + DELIMITER + entry.getValue());
             }
 
         } catch (FileNotFoundException e) {

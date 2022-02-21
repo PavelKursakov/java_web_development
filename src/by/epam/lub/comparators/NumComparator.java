@@ -1,13 +1,12 @@
 package by.epam.lub.comparators;
 
-import by.epam.lub.beans.LenNum;
-
 import java.util.Comparator;
+import java.util.Map;
 
-public class NumComparator implements Comparator<LenNum> {
+public class NumComparator implements Comparator<Map.Entry<Integer, Integer>> {
 
     @Override
-    public int compare(LenNum o1, LenNum o2) {
-        return o2.getNum() - o1.getNum();
+    public int compare(Map.Entry<Integer, Integer> entry1, Map.Entry<Integer, Integer> entry2) {
+        return entry2.getValue() - entry1.getValue();
     }
 }

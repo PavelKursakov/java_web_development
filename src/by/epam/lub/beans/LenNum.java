@@ -1,23 +1,18 @@
 package by.epam.lub.beans;
 
-public class LenNum implements Comparable<LenNum> {
-    private int len;
+import static by.epam.lub.constants.Constants.*;
+
+public class LenNum {
+    private final int len;
     private int num;
 
-    public LenNum() {
-    }
-
-    public LenNum(int len, int num) {
+    public LenNum(int len) {
         this.len = len;
-        this.num = num;
+        num = 1;
     }
 
     public int getLen() {
         return len;
-    }
-
-    public void setLen(int len) {
-        this.len = len;
     }
 
     public int getNum() {
@@ -28,21 +23,35 @@ public class LenNum implements Comparable<LenNum> {
         this.num = num;
     }
 
+    public void incNum() {
+        num++;
+    }
+
     @Override
     public String toString() {
-        return len + ";" + num;
+        return len + DELIMITER + num;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LenNum lenNum = (LenNum) o;
-        return len == lenNum.len;
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final LenNum other = (LenNum) obj;
+        if (len != other.len)
+            return false;
+        other.incNum();
+        return true;
     }
 
     @Override
-    public int compareTo(LenNum lenNum) {
-        return len - lenNum.len;
+    public int hashCode() {
+        final int PRIME = 17;
+        int result = 1;
+        result = PRIME * result + len;
+        return result;
     }
 }

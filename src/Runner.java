@@ -18,18 +18,24 @@ public class Runner {
                 double x2 = Double.parseDouble(coordinates[INDEX_X2]);
                 double y2 = Double.parseDouble(coordinates[INDEX_Y2]);
                 int len = (int) Math.round(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
-                int num = lenNumMap.get(len) != null ? lenNumMap.get(len) + 1 : 1;
-                lenNumMap.put(len, num);
+                Integer num = lenNumMap.get(len);
+                if (num == null) {
+                    num = 0;
+                }
+                lenNumMap.put(len, num + 1);
             }
             List<Map.Entry<Integer, Integer>> lenNumList = new ArrayList<>(lenNumMap.entrySet());
             Collections.sort(lenNumList, new NumComparator());
-
-            for (Map.Entry<Integer, Integer> entry : lenNumList) {
-                System.out.println(entry.getKey() + DELIMITER + entry.getValue());
-            }
+            printCollection(lenNumList);
 
         } catch (FileNotFoundException e) {
             System.out.println(FILE_IS_NOT_FOUND);
+        }
+    }
+
+    private static void printCollection(List<Map.Entry<Integer, Integer>> lenNumList) {
+        for (Map.Entry<Integer, Integer> entry : lenNumList) {
+            System.out.println(entry.getKey() + DELIMITER + entry.getValue());
         }
     }
 }

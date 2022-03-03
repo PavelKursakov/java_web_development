@@ -57,6 +57,7 @@ public class Result {
     public String toString() {
         return login + DELIMITER + test + DELIMITER +
                 new SimpleDateFormat(SIMPLE_DATE_FORMAT).format(date) +
-                DELIMITER + String.format(DOUBLE_MARK_FORMAT, mark / 10, mark % 10);
+                DELIMITER + String.format(DOUBLE_MARK_FORMAT, mark /
+                TEN_FOR_INT_MAR, mark % TEN_FOR_INT_MAR);
     }
 }

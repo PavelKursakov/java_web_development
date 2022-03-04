@@ -19,7 +19,7 @@
     </complexType>
     <simpleType name="Login">
         <restriction base="ID">
-            <pattern value="\d\.\d|10\.0"/>
+            <pattern value="[a-zA-Z].{2,}"/>
         </restriction>
     </simpleType>
     <complexType name="Tests">
@@ -35,7 +35,7 @@
     </complexType>
     <simpleType name="Mark">
         <restriction base="token">
-            <pattern value="[1-9][.][0-9]"/>
+            <pattern value="\d\.\d|10\.0"/>
         </restriction>
     </simpleType>
 </schema>

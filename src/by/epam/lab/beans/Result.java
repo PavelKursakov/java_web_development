@@ -1,7 +1,7 @@
 package by.epam.lab.beans;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 
 import static by.epam.lab.utils.Constants.*;
 
@@ -10,6 +10,8 @@ public class Result {
     private String test;
     private Date date;
     private int mark;
+    private final static SimpleDateFormat OUTPUT_DATE_FORMAT =
+            new SimpleDateFormat(SIMPLE_DATE_FORMAT);
 
     public Result() {
     }
@@ -19,6 +21,10 @@ public class Result {
         this.test = test;
         this.date = date;
         this.mark = mark;
+    }
+
+    public Result(String login, String test, String date, String mark) {
+        this(login, test, Date.valueOf(date), (int) (Double.parseDouble(mark) * TEN_FOR_INT_MAR));
     }
 
     public String getLogin() {
@@ -53,11 +59,17 @@ public class Result {
         this.mark = mark;
     }
 
+    public String getStringDate() {
+        return OUTPUT_DATE_FORMAT.format(date);
+    }
+
+    public String getStringMark() {
+        return String.format(DOUBLE_MARK_FORMAT, mark /
+                TEN_FOR_INT_MAR, mark % TEN_FOR_INT_MAR);
+    }
+
     @Override
     public String toString() {
-        return login + DELIMITER + test + DELIMITER +
-                new SimpleDateFormat(SIMPLE_DATE_FORMAT).format(date) +
-                DELIMITER + String.format(DOUBLE_MARK_FORMAT, mark /
-                TEN_FOR_INT_MAR, mark % TEN_FOR_INT_MAR);
+        return login + DELIMITER + test + DELIMITER + getStringDate() + DELIMITER + getStringMark();
     }
 }

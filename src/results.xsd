@@ -19,7 +19,7 @@
     </complexType>
     <simpleType name="Login">
         <restriction base="ID">
-            <pattern value="[a-zA-Z].{2,}"/>
+            <pattern value="\d\.\d|10\.0"/>
         </restriction>
     </simpleType>
     <complexType name="Tests">

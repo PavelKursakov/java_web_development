@@ -36,8 +36,7 @@ public class ResultHandler extends DefaultHandler {
         currentEnum = ResultEnum.valueOf(localName.toUpperCase());
         if (currentEnum == ResultEnum.TEST) {
             results.add(new Result(login, attributes.getValue(TEST_ID),
-                    Date.valueOf(attributes.getValue(DATE_ID)),
-                    (int) (Double.parseDouble(attributes.getValue(MARK_ID)) * TEN_FOR_INT_MAR)));
+                    attributes.getValue(DATE_ID), attributes.getValue(MARK_ID)));
         }
     }
 

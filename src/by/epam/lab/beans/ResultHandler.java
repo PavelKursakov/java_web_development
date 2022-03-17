@@ -33,8 +33,9 @@ public class ResultHandler extends DefaultHandler {
                              Attributes attributes) throws SAXException {
         currentEnum = ResultEnum.valueOf(localName.toUpperCase());
         if (currentEnum == ResultEnum.TEST) {
-            results.add(new Result(login, attributes.getValue(TEST_ID),
-                    attributes.getValue(DATE_ID), attributes.getValue(MARK_ID)));
+            results.add(new Result(login, attributes.getValue(TEST_ID_FOR_RESULT_HANDLER),
+                    attributes.getValue(DATE_ID_FOR_RESULT_HANDLER),
+                    attributes.getValue(MARK_ID_FOR_RESULT_HANDLER)));
         }
     }
 

@@ -29,12 +29,13 @@ public class Result {
     }
 
     public Result(String login, String test, String date, String mark, MarkType markType) {
-        this(login,test,java.sql.Date.valueOf(date),(int) (Double.parseDouble(mark)));
+        this(login, test, java.sql.Date.valueOf(date), (int) (Double.parseDouble(mark)));
         this.markType = markType;
     }
 
     public Result(String login, String test, String date, String mark) {
-        this(login, test, java.sql.Date.valueOf(date), (int) (Double.parseDouble(mark) * TEN_FOR_INT_MAR));
+        this(login, test, java.sql.Date.valueOf(date),
+                (int) (Double.parseDouble(mark) * TEN_FOR_INT_MAR));
     }
 
     public MarkType getMarkType() {

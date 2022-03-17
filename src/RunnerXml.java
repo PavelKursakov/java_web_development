@@ -27,15 +27,17 @@ public class RunnerXml {
                     int loginId = 0;
                     int testId = 0;
                     try (ResultSet rs =
-                                 st.executeQuery(String.format(SELECT_ID_LOGIN, result.getLogin()))) {
+                                 st.executeQuery(String.format
+                                         (SELECT_ID_LOGIN, result.getLogin()))) {
                         while (rs.next()) {
-                            loginId = rs.getInt(1);
+                            loginId = rs.getInt(COLUMN_INDEX_ONE);
                         }
                     }
                     try (ResultSet rs =
-                                 st.executeQuery(String.format(SELECT_ID_TESTS, result.getTest()))) {
+                                 st.executeQuery(String.format
+                                         (SELECT_ID_TESTS, result.getTest()))) {
                         while (rs.next()) {
-                            testId = rs.getInt(1);
+                            testId = rs.getInt(COLUMN_INDEX_ONE);
                         }
                     }
                     ps.setInt(LOGIN_ID, loginId);
@@ -50,8 +52,8 @@ public class RunnerXml {
             }
             try (ResultSet rs = st.executeQuery(SELECT_MEAN_VALUE_OF_MARKS)) {
                 while (rs.next()) {
-                    System.out.println(rs.getString(1) +
-                            DELIMITER + rs.getString(2));
+                    System.out.println(rs.getString(COLUMN_INDEX_ONE) +
+                            DELIMITER + rs.getString(COLUMN_INDEX_TWO));
                 }
             } catch (SQLException e) {
                 System.err.println(e);

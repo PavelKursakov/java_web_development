@@ -23,18 +23,25 @@ public class RunnerCsv2 {
                     int testId = 0;
                     String[] elements = sc.next().split(DELIMITER);
                     try (ResultSet rs =
-                                 st.executeQuery(String.format(SELECT_ID_LOGIN, elements[0]))) {
+                                 st.executeQuery(String.format(
+                                         SELECT_ID_LOGIN, elements[LOGIN_ID]))) {
                         while (rs.next()) {
-                            loginId = rs.getInt(1);
+                            loginId = rs.getInt(COLUMN_INDEX_ONE);
                         }
                     }
                     try (ResultSet rs =
-                                 st.executeQuery(String.format(SELECT_ID_TESTS, elements[1]))) {
+                                 st.executeQuery(String.format(
+                                         SELECT_ID_TESTS, elements[TEST_ID]))) {
                         while (rs.next()) {
-                            testId = rs.getInt(1);
+                            testId = rs.getInt(COLUMN_INDEX_ONE);
                         }
                     }
-                    Result result = new Result(elements[0], elements[1], elements[2], elements[3]);
+                    Result result = new Result(
+                            elements[LOGIN_ID_ELEMENT],
+                            elements[TEST_ID_ELEMENT],
+                            elements[DATE_ID_ELEMENT],
+                            elements[MARK_ID_ELEMENT]);
+
                     ps.setInt(LOGIN_ID, loginId);
                     ps.setInt(TEST_ID, testId);
                     ps.setDate(DATE_ID, result.getDate());
@@ -47,8 +54,8 @@ public class RunnerCsv2 {
             }
             try (ResultSet rs = st.executeQuery(SELECT_MEAN_VALUE_OF_MARKS)) {
                 while (rs.next()) {
-                    System.out.println(rs.getString(1) + DELIMITER +
-                            rs.getString(2));
+                    System.out.println(rs.getString(COLUMN_INDEX_ONE) + DELIMITER +
+                            rs.getString(COLUMN_INDEX_TWO));
                 }
             } catch (SQLException e) {
                 System.err.println(e);

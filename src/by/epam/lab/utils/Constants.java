@@ -38,4 +38,10 @@ public class Constants {
     public static final int DATE_ID = 3;
     public static final int MARK_ID = 4;
     public static final int FIVE_FOR_EQUALS = 5;
+    public static final int LOGIN_ID_ELEMENT = 0;
+    public static final int TEST_ID_ELEMENT = 1;
+    public static final int DATE_ID_ELEMENT = 2;
+    public static final int MARK_ID_ELEMENT = 3;
+    public static final int COLUMN_INDEX_ONE = 1;
+    public static final int COLUMN_INDEX_TWO = 2;
 }

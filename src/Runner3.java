@@ -18,8 +18,6 @@ public class Runner3 {
             try (Scanner sc = new Scanner(new FileReader(CSV_NAME2))) {
                 sc.useLocale(Locale.ENGLISH);
                 st.executeUpdate(DELETE_ALL_FROM_RESULTS);
-                LinkedList<Result> resultList = new LinkedList<>();
-                MarkType markType = MarkType.HALF_MARK;
                 while (sc.hasNextLine()) {
                     int loginId = 0;
                     int testId = 0;
@@ -42,23 +40,29 @@ public class Runner3 {
                     ps.addBatch();
                 }
                 ps.executeBatch();
-                try (ResultSet rs = st.executeQuery(SELECT_MEAN_VALUE_OF_MARKS)) {
-                    while (rs.next()) {
-                        System.out.println(rs.getString(1) + DELIMITER + rs.getString(2));
-                    }
+            } catch (FileNotFoundException e) {
+                System.err.println(e);
+            }
+            try (ResultSet rs = st.executeQuery(SELECT_MEAN_VALUE_OF_MARKS)) {
+                while (rs.next()) {
+                    System.out.println(rs.getString(1) + DELIMITER + rs.getString(2));
                 }
-                try (ResultSet rs = st.executeQuery(SELECT_RESULTS_IN_THIS_MONTH)) {
-                    System.out.println(RESULT_IN_THIS_MONTH);
-                    while (rs.next()) {
-                        Result result = new Result(
-                                rs.getString(1),
-                                rs.getString(2),
-                                rs.getString(3),
-                                rs.getString(4),
-                                markType);
-                        resultList.add(result);
-                        System.out.println(result);
-                    }
+            } catch (SQLException e) {
+                System.err.println(e);
+            }
+            try (ResultSet rs = st.executeQuery(SELECT_RESULTS_IN_THIS_MONTH)) {
+                LinkedList<Result> resultList = new LinkedList<>();
+                MarkType markType = MarkType.HALF_MARK;
+                System.out.println(RESULT_IN_THIS_MONTH);
+                while (rs.next()) {
+                    Result result = new Result(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4),
+                            markType);
+                    resultList.add(result);
+                    System.out.println(result);
                 }
                 if (!resultList.isEmpty()) {
                     System.out.println(RESULTS_IN_THE_LATEST_DAY);
@@ -71,7 +75,7 @@ public class Runner3 {
                     System.out.println(NO_SUCH_ELEMENT_LIST_IS_EMPTY);
                 }
             }
-        } catch (SQLException | FileNotFoundException e) {
+        }catch (SQLException e){
             System.err.println(e);
         }
     }

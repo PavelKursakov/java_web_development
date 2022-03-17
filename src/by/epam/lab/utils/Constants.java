@@ -4,7 +4,7 @@ public class Constants {
     public static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/results";
     public static final String USER = "root";
     public static final String PASSWORD = "root";
-    public static final String CSV_NAME = "src/results11.csv";
+    public static final String CSV_NAME = "src/results.csv";
     public static final String CSV_NAME2 = "src/results2.csv";
     public static final String DELIMITER = ";";
     public static final String SIMPLE_DATE_FORMAT = "dd.MM.yyyy";

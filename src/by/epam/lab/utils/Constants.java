@@ -2,8 +2,8 @@ package by.epam.lab.utils;
 
 public class Constants {
     public static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/results";
-    public static final String USER = "root";
-    public static final String PASSWORD = "root";
+    public static final String USER = "jse";
+    public static final String PASSWORD = "jse";
     public static final String CSV_NAME = "src/results.csv";
     public static final String CSV_NAME2 = "src/results2.csv";
     public static final String DELIMITER = ";";

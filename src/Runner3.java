@@ -10,16 +10,16 @@ import java.util.Scanner;
 
 import static by.epam.lab.utils.Constants.*;
 
-public class Runner {
+public class Runner3 {
     public static void main(String[] args) {
         try (Connection cn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement st = cn.createStatement();
              PreparedStatement ps = cn.prepareStatement(INSERT_INTO_RESULT_TABLE)) {
-            try (Scanner sc = new Scanner(new FileReader(CSV_NAME))) {
+            try (Scanner sc = new Scanner(new FileReader(CSV_NAME2))) {
                 sc.useLocale(Locale.ENGLISH);
                 st.executeUpdate(DELETE_ALL_FROM_RESULTS);
                 LinkedList<Result> resultList = new LinkedList<>();
-                MarkType markType = MarkType.INT_MARK;
+                MarkType markType = MarkType.HALF_MARK;
                 while (sc.hasNextLine()) {
                     int loginId = 0;
                     int testId = 0;

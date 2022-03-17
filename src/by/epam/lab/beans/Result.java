@@ -1,15 +1,20 @@
-package by.epam.lab;
+package by.epam.lab.beans;
+
+import by.epam.lab.enums.MarkType;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
-import static by.epam.lab.Constants.*;
+import static by.epam.lab.utils.Constants.*;
 
 public class Result {
     private String login;
     private String test;
     private java.sql.Date date;
     private int mark;
+    private MarkType markType;
+
     private final static SimpleDateFormat OUTPUT_DATE_FORMAT =
             new SimpleDateFormat(SIMPLE_DATE_FORMAT);
 
@@ -23,8 +28,21 @@ public class Result {
         this.mark = mark;
     }
 
+    public Result(String login, String test, String date, String mark, MarkType markType) {
+        this(login,test,java.sql.Date.valueOf(date),(int) (Double.parseDouble(mark)));
+        this.markType = markType;
+    }
+
     public Result(String login, String test, String date, String mark) {
         this(login, test, java.sql.Date.valueOf(date), (int) (Double.parseDouble(mark) * TEN_FOR_INT_MAR));
+    }
+
+    public MarkType getMarkType() {
+        return markType;
+    }
+
+    public void setMarkType(MarkType markType) {
+        this.markType = markType;
     }
 
     public String getLogin() {
@@ -64,12 +82,19 @@ public class Result {
     }
 
     public String getStringMark() {
-        return String.format(DOUBLE_MARK_FORMAT, mark /
-                TEN_FOR_INT_MAR, mark % TEN_FOR_INT_MAR);
+        return markType.getStringMark(mark);
     }
 
     @Override
     public String toString() {
         return login + DELIMITER + test + DELIMITER + getStringDate() + DELIMITER + getStringMark();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Result result = (Result) o;
+        return Objects.equals(date, result.date);
     }
 }

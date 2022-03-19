@@ -2,8 +2,8 @@ package by.epam.lab.utils;
 
 public class Constants {
     public static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/results";
-    public static final String USER = "jse";
-    public static final String PASSWORD = "jse";
+    public static final String USER = "root";
+    public static final String PASSWORD = "root";
     public static final String CSV_NAME = "src/results.csv";
     public static final String CSV_NAME2 = "src/results2.csv";
     public static final String DELIMITER = ";";
@@ -14,6 +14,8 @@ public class Constants {
     public static final String RESULTS_IN_THE_LATEST_DAY = "Results in the latest day:";
     public static final String INSERT_INTO_RESULT_TABLE =
             "INSERT INTO results(loginId,testId,date,mark) values(?,?,?,?);";
+    public static final String INSERT_INTO_LOGINS_TABLE = "INSERT INTO logins(name) values(?);";
+    public static final String INSERT_INTO_TESTS_TABLE = "INSERT INTO tests(name) values(?);";
     public static final String SELECT_ID_LOGIN = "SELECT idLogin FROM logins WHERE name = '%s'";
     public static final String SELECT_ID_TESTS = "SELECT idTest FROM tests WHERE name = '%s'";
     public static final String SELECT_MEAN_VALUE_OF_MARKS =
@@ -44,4 +46,5 @@ public class Constants {
     public static final int MARK_ID_ELEMENT = 3;
     public static final int COLUMN_INDEX_ONE = 1;
     public static final int COLUMN_INDEX_TWO = 2;
+    public static final int NAME_ID_FOR_SET_LOG_TEST = 1;
 }

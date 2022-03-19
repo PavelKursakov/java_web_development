@@ -37,6 +37,10 @@ public class Result {
         this(login, test, java.sql.Date.valueOf(date),
                 (int) (Double.parseDouble(mark) * TEN_FOR_INT_MAR));
     }
+    public Result(String[] elements) {
+        this(elements[LOGIN_ID_ELEMENT], elements[TEST_ID_ELEMENT], Date.valueOf(elements[DATE_ID_ELEMENT]),
+                (int) (Double.parseDouble(elements[MARK_ID_ELEMENT]) * TEN_FOR_INT_MAR));
+    }
 
     public MarkType getMarkType() {
         return markType;

@@ -14,9 +14,10 @@ public class RunnerLogic {
     public static void logicMethod(String fileName, ResultFactory resultFactory) {
         try (Connection cn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement st = cn.createStatement()) {
-            st.executeUpdate(String.format(DELETE_ALL_FROM_LOGINS));
-            st.executeUpdate(String.format(DELETE_ALL_FROM_TESTS));
-            st.executeUpdate(String.format(DELETE_ALL_FROM_RESULTS));
+            st.executeUpdate(DELETE_ALL_FROM_LOGINS);
+            st.executeUpdate(DELETE_ALL_FROM_TESTS);
+            st.executeUpdate(DELETE_ALL_FROM_RESULTS);
+            ResultLoader.loadResults(resultFactory.getDaoFromFactory(fileName));
             try (ResultSet rs = st.executeQuery(SELECT_MEAN_VALUE_OF_MARKS)) {
                 while (rs.next()) {
                     System.out.println(rs.getString(COLUMN_INDEX_ONE) +
@@ -25,7 +26,6 @@ public class RunnerLogic {
             } catch (SQLException e) {
                 System.err.println(e);
             }
-            ResultLoader.loadResults(resultFactory.getDaoFromFactory(fileName));
             try (ResultSet rs = st.executeQuery(SELECT_RESULTS_IN_THIS_MONTH)) {
                 LinkedList<Result> resultList = new LinkedList<>();
                 LocalDate localDateNow = LocalDate.now();

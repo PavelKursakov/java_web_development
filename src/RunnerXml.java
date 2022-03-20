@@ -1,14 +1,10 @@
-import by.epam.lab.beans.*;
-
-import java.sql.*;
+import by.epam.lab.factorys.DecimalResultFactory;
 
 import static by.epam.lab.utils.Constants.*;
 
 public class RunnerXml {
-    public static void main(String[] args) throws SQLException {
-        ResultDao reader = new ResultImplCsv(RESULTS_NAME);
+    public static void main(String[] args) {
         DecimalResultFactory decimalResultFactory = new DecimalResultFactory();
-        ResultsLoader.loadResults(reader);
         RunnerLogic.logicMethod(RESULTS_NAME, decimalResultFactory);
     }
 }

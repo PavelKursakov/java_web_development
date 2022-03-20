@@ -1,10 +1,12 @@
 package by.epam.lab.beans;
 
+import by.epam.lab.interfaces.ResultDao;
+
 import java.sql.*;
 
 import static by.epam.lab.utils.Constants.*;
 
-public class ResultsLoader {
+public class ResultLoader {
     private static Connection cn;
     private static Statement st;
 
@@ -18,10 +20,12 @@ public class ResultsLoader {
             String test = result.getTest();
             int idLogin = getId(login, SELECT_ID_LOGIN, INSERT_INTO_LOGINS_TABLE);
             int idTest = getId(test, SELECT_ID_TESTS, INSERT_INTO_TESTS_TABLE);
-            psInsertForResult.setInt(LOGIN_ID,idLogin);
-            psInsertForResult.setInt(TEST_ID,idTest);
-            psInsertForResult.setDate(DATE_ID,result.getDate());
-            psInsertForResult.setInt(MARK_ID,result.getMark());
+            psInsertForResult.setInt(LOGIN_ID, idLogin);
+            psInsertForResult.setInt(TEST_ID, idTest);
+            psInsertForResult.setDate(DATE_ID, result.getDate());
+            psInsertForResult.setInt(MARK_ID, result.getMark());
+            psInsertForResult.addBatch();
+            psInsertForResult.executeBatch();
         }
     }
 
@@ -49,8 +53,9 @@ public class ResultsLoader {
                     }
                 }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println(e);
+            ;
         }
         return id;
     }

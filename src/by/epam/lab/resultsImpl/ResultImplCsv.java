@@ -1,4 +1,7 @@
-package by.epam.lab.beans;
+package by.epam.lab.resultsImpl;
+
+import by.epam.lab.beans.Result;
+import by.epam.lab.interfaces.ResultDao;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

@@ -1,17 +1,10 @@
-import by.epam.lab.beans.ResultDao;
-import by.epam.lab.beans.ResultImplCsv;
-import by.epam.lab.beans.ResultsLoader;
-
-import java.sql.*;
-
+import by.epam.lab.factorys.HalfResultFactory;
 
 import static by.epam.lab.utils.Constants.*;
 
 public class RunnerCsv2 {
-    public static void main(String[] args) throws SQLException {
-        ResultDao reader = new ResultImplCsv(CSV_NAME2);
+    public static void main(String[] args) {
         HalfResultFactory halfResultFactory = new HalfResultFactory();
-        ResultsLoader.loadResults(reader);
         RunnerLogic.logicMethod(CSV_NAME2, halfResultFactory);
     }
 }

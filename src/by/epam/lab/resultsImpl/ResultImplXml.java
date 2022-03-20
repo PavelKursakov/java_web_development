@@ -1,5 +1,8 @@
-package by.epam.lab.beans;
+package by.epam.lab.resultsImpl;
 
+import by.epam.lab.beans.Result;
+import by.epam.lab.beans.ResultHandler;
+import by.epam.lab.interfaces.ResultDao;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;

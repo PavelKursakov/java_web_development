@@ -30,7 +30,7 @@ public class ResultHandler extends DefaultHandler {
     }
 
     public void startElement(String uri, String localName, String qName,
-                             Attributes attributes) throws SAXException {
+                             Attributes attributes) {
         currentEnum = ResultEnum.valueOf(localName.toUpperCase());
         if (currentEnum == ResultEnum.TEST) {
             results.add(new Result(login, attributes.getValue(TEST_ID_FOR_RESULT_HANDLER),

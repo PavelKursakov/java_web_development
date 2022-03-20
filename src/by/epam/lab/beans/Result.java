@@ -21,11 +21,16 @@ public class Result {
     public Result() {
     }
 
-    public Result(String login, String test, java.sql.Date date, int mark) {
+    public Result(String login, String test, Date date, int mark) {
         this.login = login;
         this.test = test;
         this.date = date;
         this.mark = mark;
+    }
+
+    public Result(String login, String test, Date date, int mark, MarkType markType) {
+        this(login, test, date, mark);
+        this.markType = markType;
     }
 
     public Result(String login, String test, String date, String mark, MarkType markType) {
@@ -37,6 +42,7 @@ public class Result {
         this(login, test, java.sql.Date.valueOf(date),
                 (int) (Double.parseDouble(mark) * TEN_FOR_INT_MAR));
     }
+
     public Result(String[] elements) {
         this(elements[LOGIN_ID_ELEMENT], elements[TEST_ID_ELEMENT], Date.valueOf(elements[DATE_ID_ELEMENT]),
                 (int) (Double.parseDouble(elements[MARK_ID_ELEMENT]) * TEN_FOR_INT_MAR));

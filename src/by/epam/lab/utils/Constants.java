@@ -29,6 +29,8 @@ public class Constants {
             "WHERE MONTH (date) = MONTH(current_date) and YEAR(date) = YEAR (current_date) \n" +
             "order by date asc ";
     public static final String DELETE_ALL_FROM_RESULTS = "Delete from results";
+    public static final String DELETE_ALL_FROM_TESTS = "Delete from results";
+    public static final String DELETE_ALL_FROM_LOGINS = "Delete from results";
     public static final String RESULTS_NAME = "src/results.xml";
     public static final String NO_SUCH_ELEMENT_LIST_IS_EMPTY = "No such element. List is empty!";
     public static final int TEST_ID_FOR_RESULT_HANDLER = 0;

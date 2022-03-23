@@ -8,7 +8,7 @@ import java.sql.Date;
 public class HalfResultFactory extends ResultFactory {
     @Override
     public Result getResultFromFactory(String login, String test, Date date, int mark) {
-        return new Result(login, test, date, mark);
+        return new HalfResult(login, test, date, mark);
     }
 
     public Result getResultFromFactory(String login, String test, String date, String mark) {

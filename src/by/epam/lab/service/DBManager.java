@@ -16,7 +16,7 @@ public class DBManager {
 
     private static Connection getInstance() {
         try {
-            return DriverManager.getConnection(DB_URL,USER, PASSWORD);
+            return DriverManager.getConnection(DB_URL, USER, PASSWORD);
         } catch (SQLException e) {
             throw new InitRuntimeException(ERROR_INIT_CONNECTION);
         }
@@ -27,7 +27,7 @@ public class DBManager {
     }
 
     public static void closeConnection() {
-        if(CONNECTION != null) {
+        if (CONNECTION != null) {
             try {
                 CONNECTION.close();
             } catch (SQLException e) {

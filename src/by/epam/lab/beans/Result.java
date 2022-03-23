@@ -3,7 +3,6 @@ package by.epam.lab.beans;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
 
 import static by.epam.lab.utils.Constants.*;
 
@@ -82,13 +81,5 @@ public class Result {
     public String toString() {
         return getClass().getSimpleName() + DELIMITER + login + DELIMITER +
                 test + DELIMITER + getStringDate() + DELIMITER + getStringMark();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Result result = (Result) o;
-        return Objects.equals(date, result.date);
     }
 }

@@ -1,6 +1,7 @@
 package by.epam.lab.beans;
 
 import java.sql.Date;
+
 import static by.epam.lab.utils.Constants.*;
 
 public class HalfResult extends Result {

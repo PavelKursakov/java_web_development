@@ -41,7 +41,7 @@ public class ResultLoader {
             }
             psInsertForResult.executeBatch();
         } catch (SQLException e) {
-           throw new ConnectionException(LOAD_ERROR);
+            throw new ConnectionException(LOAD_ERROR);
         }
     }
 
@@ -50,16 +50,16 @@ public class ResultLoader {
         selectRequest.setString(NAME_ID_FOR_SET_LOG_TEST, name);
         int id;
         try (ResultSet rs = selectRequest.executeQuery()) {
-           if (rs.next()){
-               id = rs.getInt(NAME_ID_FOR_SET_LOG_TEST);
-           }else {
-               insertRequest.setString(NAME_ID_FOR_SET_LOG_TEST,name);
-               insertRequest.executeUpdate();
-               try (ResultSet rs2 = selectRequest.executeQuery()) {
-                   rs2.next();
-                   id = rs2.getInt(NAME_ID_FOR_SET_LOG_TEST);
-               }
-           }
+            if (rs.next()) {
+                id = rs.getInt(NAME_ID_FOR_SET_LOG_TEST);
+            } else {
+                insertRequest.setString(NAME_ID_FOR_SET_LOG_TEST, name);
+                insertRequest.executeUpdate();
+                try (ResultSet rs2 = selectRequest.executeQuery()) {
+                    rs2.next();
+                    id = rs2.getInt(NAME_ID_FOR_SET_LOG_TEST);
+                }
+            }
         }
         return id;
     }

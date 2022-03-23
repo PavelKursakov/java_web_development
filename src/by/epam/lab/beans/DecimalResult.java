@@ -1,7 +1,9 @@
 package by.epam.lab.beans;
 
 import java.sql.Date;
+
 import static by.epam.lab.utils.Constants.*;
+
 public class DecimalResult extends Result {
     public final static int FACTOR = 10;
 

@@ -40,12 +40,12 @@ public class RunnerLogic {
 
     private static void printAverageMarks(ResultFactory factory) {
         try (Statement statement = DBManager.getConnection().createStatement();
-             ResultSet rs = statement.executeQuery(SELECT_RESULT_TABLE_AFTER_SORTED_BY_DATE)) {
+             ResultSet rs = statement.executeQuery(SELECT_MEAN_VALUE_OF_MARKS)) {
             while (rs.next()) {
                 String login = rs.getString(NAME_ID_FOR_SET_LOG_TEST);
                 double mark = rs.getDouble(MEAN_MARK_ID);
                 mark = factory.getScaledMark(mark);
-                System.out.printf(FORMAT_FOR_AVG_MARK_TABLE, login, DELIMITER, mark);
+                System.out.printf(FORMAT_FOR_AVG_MARK_TABLE, login, mark);
             }
         } catch (SQLException e) {
             System.err.println(ERROR_AVERAGE_MARKS + e.getMessage());
@@ -53,6 +53,7 @@ public class RunnerLogic {
     }
 
     private static void getCurrentAndPrintLastDay(ResultFactory factory) {
+        System.out.println(RESULT_IN_THIS_MONTH);
         try {
             List<Result> currentMonthResults = getCurrentMonthResults(factory);
             printLastDayResults(currentMonthResults);
@@ -69,8 +70,8 @@ public class RunnerLogic {
                 Result result = factory.getResultFromFactory(
                         rs.getString(LOGIN_ID),
                         rs.getString(TEST_ID),
-                        rs.getString(DATE_ID),
-                        rs.getString(MARK_ID));
+                        rs.getDate(DATE_ID),
+                        rs.getInt(MARK_ID));
                 System.out.println(result);
                 currentMonthResults.add(result);
             }
@@ -79,6 +80,7 @@ public class RunnerLogic {
     }
 
     private static void printLastDayResults(List<Result> results) {
+        System.out.println(RESULTS_IN_THE_LATEST_DAY);
         if (!results.isEmpty()) {
             int dateMaxDay = results.get(results.size() - 1)
                     .getDate().toLocalDate().getDayOfMonth();

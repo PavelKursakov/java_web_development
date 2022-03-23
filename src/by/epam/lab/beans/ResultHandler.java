@@ -2,7 +2,6 @@ package by.epam.lab.beans;
 
 import by.epam.lab.factorys.ResultFactory;
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.LinkedList;
@@ -28,7 +27,7 @@ public class ResultHandler extends DefaultHandler {
     }
 
     public void startElement(String uri, String localName, String qName,
-                             Attributes attributes) throws SAXException {
+                             Attributes attributes) {
         currentEnum = ResultEnum.valueOf(localName.toUpperCase());
         if (currentEnum == ResultEnum.TEST) {
             Result result = resultFactory.getResultFromFactory(

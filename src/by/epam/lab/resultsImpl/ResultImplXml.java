@@ -2,53 +2,48 @@ package by.epam.lab.resultsImpl;
 
 import by.epam.lab.beans.Result;
 import by.epam.lab.beans.ResultHandler;
+import by.epam.lab.exceptions.ParseRuntimeException;
+import by.epam.lab.exceptions.SourceException;
+import by.epam.lab.factorys.ResultFactory;
 import by.epam.lab.interfaces.ResultDao;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Iterator;
+import static by.epam.lab.utils.Constants.*;
 
 public class ResultImplXml implements ResultDao {
-    private List<Result> resultList;
-    private int index = 0;
+    private Iterator<Result> resultIterator;
 
-    public ResultImplXml(String resultsName) {
+    public ResultImplXml(String fileNameXml, ResultFactory resultFactory) throws SourceException {
         try {
-            ResultHandler handler = new ResultHandler();
+            String fileNameXmlFull = SOURCE_DIR + fileNameXml + XML;
             XMLReader reader = XMLReaderFactory.createXMLReader();
+            ResultHandler handler = new ResultHandler(resultFactory);
             reader.setContentHandler(handler);
-            try {
-                reader.parse(resultsName);
-                resultList = handler.getResults();
-            } catch (FileNotFoundException e) {
-                resultList = new LinkedList<>();
-                System.err.println(e);
-            }
-
-        } catch (IOException | SAXException e) {
-            System.err.println(e);
+            reader.parse(fileNameXmlFull);
+            resultIterator = handler.getResults().iterator();
+        } catch (IOException e) {
+            throw new SourceException(e.getMessage());
+        } catch (SAXException e) {
+            throw new ParseRuntimeException(WRONG_DATA_IN_XML_FILE);
         }
     }
 
     @Override
     public Result nextResult() {
-        Result result = resultList.get(index);
-        if (hasResult()) {
-            index++;
-        }
-        return result;
+        return resultIterator.next();
     }
 
     @Override
     public boolean hasResult() {
-        return index + 1 < resultList.size() && resultList.get(index + 1) != null;
+        return resultIterator.hasNext();
     }
 
+    @Override
     public void close() {
-
+        resultIterator = null;
     }
 }

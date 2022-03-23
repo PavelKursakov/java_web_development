@@ -1,5 +1,6 @@
 package by.epam.lab.beans;
 
+import by.epam.lab.factorys.ResultFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -16,26 +17,26 @@ public class ResultHandler extends DefaultHandler {
     private LinkedList<Result> results = new LinkedList<>();
     private ResultEnum currentEnum;
     private String login;
+    private ResultFactory resultFactory;
 
     public LinkedList<Result> getResults() {
         return results;
     }
 
-    public ResultEnum getCurrentEnum() {
-        return currentEnum;
-    }
-
-    public String getLogin() {
-        return login;
+    public ResultHandler(ResultFactory resultFactory) {
+        this.resultFactory = resultFactory;
     }
 
     public void startElement(String uri, String localName, String qName,
-                             Attributes attributes) {
+                             Attributes attributes) throws SAXException {
         currentEnum = ResultEnum.valueOf(localName.toUpperCase());
         if (currentEnum == ResultEnum.TEST) {
-            results.add(new Result(login, attributes.getValue(TEST_ID_FOR_RESULT_HANDLER),
+            Result result = resultFactory.getResultFromFactory(
+                    login,
+                    attributes.getValue(TEST_ID_FOR_RESULT_HANDLER),
                     attributes.getValue(DATE_ID_FOR_RESULT_HANDLER),
-                    attributes.getValue(MARK_ID_FOR_RESULT_HANDLER)));
+                    attributes.getValue(MARK_ID_FOR_RESULT_HANDLER));
+            results.add(result);
         }
     }
 

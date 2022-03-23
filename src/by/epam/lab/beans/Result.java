@@ -1,8 +1,7 @@
 package by.epam.lab.beans;
 
-import by.epam.lab.enums.MarkType;
-
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
 
@@ -13,10 +12,9 @@ public class Result {
     private String test;
     private java.sql.Date date;
     private int mark;
-    private MarkType markType;
-
     private final static SimpleDateFormat OUTPUT_DATE_FORMAT =
             new SimpleDateFormat(SIMPLE_DATE_FORMAT);
+    private final static SimpleDateFormat SET_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT);
 
     public Result() {
     }
@@ -28,32 +26,16 @@ public class Result {
         this.mark = mark;
     }
 
-    public Result(String login, String test, Date date, int mark, MarkType markType) {
-        this(login, test, date, mark);
-        this.markType = markType;
-    }
-
-    public Result(String login, String test, String date, String mark, MarkType markType) {
-        this(login, test, java.sql.Date.valueOf(date), (int) (Double.parseDouble(mark)));
-        this.markType = markType;
-    }
-
     public Result(String login, String test, String date, String mark) {
-        this(login, test, java.sql.Date.valueOf(date),
-                (int) (Double.parseDouble(mark) * TEN_FOR_INT_MAR));
+        this(login, test, toDate(date), Integer.parseInt(mark));
     }
 
-    public Result(String[] elements) {
-        this(elements[LOGIN_ID_ELEMENT], elements[TEST_ID_ELEMENT], Date.valueOf(elements[DATE_ID_ELEMENT]),
-                (int) (Double.parseDouble(elements[MARK_ID_ELEMENT]) * TEN_FOR_INT_MAR));
-    }
-
-    public MarkType getMarkType() {
-        return markType;
-    }
-
-    public void setMarkType(MarkType markType) {
-        this.markType = markType;
+    protected static Date toDate(String dateStr) {
+        try {
+            return new Date(SET_DATE_FORMAT.parse(dateStr).getTime());
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(WRONG_DATE_FORMAT);
+        }
     }
 
     public String getLogin() {
@@ -93,12 +75,13 @@ public class Result {
     }
 
     public String getStringMark() {
-        return markType.getStringMark(mark);
+        return EMPTY_STRING + mark;
     }
 
     @Override
     public String toString() {
-        return login + DELIMITER + test + DELIMITER + getStringDate() + DELIMITER + getStringMark();
+        return getClass().getSimpleName() + DELIMITER + login + DELIMITER +
+                test + DELIMITER + getStringDate() + DELIMITER + getStringMark();
     }
 
     @Override

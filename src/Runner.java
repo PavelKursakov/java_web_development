@@ -24,20 +24,26 @@ public class Runner {
         trials.add(new ExtraTrial("Olga", 74, 55, 91));
         trials.forEach(System.out::println);
         System.out.println();
-        System.out.println(trials.stream().filter(Trial::isPassed).count());
+        System.out.println(trials.stream().
+                filter(Trial::isPassed).
+                count());
         System.out.println();
         trials.sort(Comparator.comparingInt(Trial::getSum));
         trials.forEach(trial -> System.out.println(trial.getSum()));
         System.out.println();
         List<Trial> failedTrials = new ArrayList<>();
-        trials.stream().filter(trial -> !trial.isPassed()).forEach(trial ->
-                failedTrials.add(trial.getClone()));
+        trials.stream().
+                filter(trial -> !trial.isPassed()).
+                forEach(trial -> failedTrials.add(trial.getClone()));
         failedTrials.forEach(Trial::clearMarks);
         System.out.println(failedTrials);
-        boolean allTrialsAreFailed = failedTrials.stream().noneMatch(Trial::isPassed);
+        boolean allTrialsAreFailed = failedTrials.stream().
+                noneMatch(Trial::isPassed);
         System.out.println();
         System.out.println(ALL_TRIALS_ARE_FAILED + allTrialsAreFailed);
-        int[] sum = trials.stream().mapToInt(Trial::getSum).toArray();
+        int[] sum = trials.stream().
+                mapToInt(Trial::getSum).
+                toArray();
         System.out.println(Arrays.toString(sum));
     }
 }

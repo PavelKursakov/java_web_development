@@ -12,19 +12,4 @@ public class StrongTrial extends Trial {
     public boolean isPassed() {
         return getMark1() / TWO_FOR_DELETE + getMark2() >= CONSTANTS_FOR_TRIAL;
     }
-
-    @Override
-    public Trial getClone() {
-        return super.getClone();
-    }
-
-    @Override
-    public void clearMarks() {
-        super.clearMarks();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }

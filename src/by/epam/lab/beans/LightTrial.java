@@ -13,18 +13,4 @@ public class LightTrial extends Trial {
         return getMark1() >= CONSTANTS_FOR_LIGHT_TRIAL && getMark2() >= CONSTANTS_FOR_LIGHT_TRIAL;
     }
 
-    @Override
-    public Trial getClone() {
-        return super.getClone();
-    }
-
-    @Override
-    public void clearMarks() {
-        super.clearMarks();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }

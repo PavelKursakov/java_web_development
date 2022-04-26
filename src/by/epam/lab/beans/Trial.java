@@ -11,6 +11,10 @@ public class Trial {
     public Trial() {
     }
 
+    public Trial(Trial trial) {
+        this(trial.getName(), trial.getMark1(), trial.getMark2());
+    }
+
     public Trial(String name, int mark1, int mark2) {
         this.name = name;
         this.mark1 = mark1;
@@ -46,7 +50,7 @@ public class Trial {
     }
 
     public Trial getClone() {
-        return new Trial(name, mark1, mark2);
+        return new Trial(this);
     }
 
     public void clearMarks() {

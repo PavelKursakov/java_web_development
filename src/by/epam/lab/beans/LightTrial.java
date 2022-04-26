@@ -7,9 +7,17 @@ public class LightTrial extends Trial {
         super(name, mark1, mark2);
     }
 
+    public LightTrial(Trial trial) {
+        super(trial);
+    }
+
     @Override
     public boolean isPassed() {
         return getMark1() >= CONSTANTS_FOR_LIGHT_TRIAL && getMark2() >= CONSTANTS_FOR_LIGHT_TRIAL;
     }
 
+    @Override
+    public Trial getClone() {
+        return new LightTrial(this);
+    }
 }

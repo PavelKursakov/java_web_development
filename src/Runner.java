@@ -26,22 +26,27 @@ public class Runner {
                 (new ExtraTrial("Olga", 74, 55, 91)));
         ToIntFunction<Trial> getResultOp =
                 trial -> trial.getMark1() + trial.getMark2();
-        trials.forEach(System.out::println);
+        trials.
+                forEach(System.out::println);
         System.out.println(EMPTY_STRING);
         System.out.println(PASSED_TESTS_COUNT);
-        System.out.println(trials.stream().
+        System.out.println(trials.
+                stream().
                 filter(Trial::isPassed).
                 count());
         System.out.println(EMPTY_STRING);
         System.out.println(SUM_OF_MARKS_AFTER_SORTING);
-        trials.sort(Comparator.comparingInt(getResultOp));
-        trials.stream().
+        trials.
+                sort(Comparator.comparingInt(getResultOp));
+        trials.
+                stream().
                 mapToInt(getResultOp).
                 forEach(System.out::println);
         System.out.println(EMPTY_STRING);
         System.out.println(FAILED_TESTS);
         List<Trial> failedTrials =
-                trials.stream().
+                trials.
+                        stream().
                         filter(trial -> !trial.isPassed()).
                         map(Trial::getClone).
                         peek(Trial::clearMarks).
@@ -53,10 +58,12 @@ public class Runner {
         System.out.println(EMPTY_STRING);
         System.out.println(ALL_TRIALS_ARE_FAILED + allTrialsAreFailed);
         System.out.println(EMPTY_STRING);
-        int[] sum = trials.stream().
+        int[] sum = trials.
+                stream().
                 mapToInt(getResultOp).
                 toArray();
-        String results = Arrays.stream(sum).
+        String results = Arrays.
+                stream(sum).
                 mapToObj(String::valueOf).
                 collect(Collectors.joining(DELIMITER));
         System.out.println(ARRAY_FROM_SUMS);

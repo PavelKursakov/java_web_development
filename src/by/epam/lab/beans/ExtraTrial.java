@@ -11,6 +11,11 @@ public class ExtraTrial extends Trial {
         this.mark3 = mark3;
     }
 
+    public ExtraTrial(ExtraTrial extraTrial) {
+        this(extraTrial.getName(), extraTrial.getMark1(),
+                extraTrial.getMark2(), extraTrial.getMark3());
+    }
+
     public int getMark3() {
         return mark3;
     }
@@ -26,7 +31,7 @@ public class ExtraTrial extends Trial {
 
     @Override
     public Trial getClone() {
-        return new ExtraTrial(getName(), getMark1(), getMark2(), getMark3());
+        return new ExtraTrial(this);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package by.epam.lab.beans;
 
-import static by.epam.lab.utils.Constants.*;
-
 public class LightTrial extends Trial {
+    public static final int CONSTANTS_FOR_LIGHT_TRIAL = 49;
 
     public LightTrial(String name, int mark1, int mark2) {
         super(name, mark1, mark2);

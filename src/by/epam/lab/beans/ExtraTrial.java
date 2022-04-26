@@ -4,6 +4,7 @@ import static by.epam.lab.utils.Constants.*;
 
 public class ExtraTrial extends Trial {
     private int mark3;
+    public static final int CONSTANTS_FOR_EXTRA_TRIAL = 37;
 
     public ExtraTrial(String name, int mark1, int mark2, int mark3) {
         super(name, mark1, mark2);

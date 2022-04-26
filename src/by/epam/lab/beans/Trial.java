@@ -6,6 +6,7 @@ public class Trial {
     private String name;
     private int mark1;
     private int mark2;
+    public static final int CONSTANTS_FOR_TRIAL = 125;
 
     public Trial() {
     }
@@ -40,12 +41,8 @@ public class Trial {
         this.mark2 = mark2;
     }
 
-    public int getSum() {
-        return mark1 + mark2;
-    }
-
     public boolean isPassed() {
-        return getSum() >= CONSTANTS_FOR_TRIAL;
+        return mark1 + mark2 >= CONSTANTS_FOR_TRIAL;
     }
 
     public Trial getClone() {
@@ -59,7 +56,7 @@ public class Trial {
 
     @Override
     public String toString() {
-        return name + DELIMITER + mark1 + DELIMITER + mark2;
+        return getClass().getSimpleName() + DELIMITER + name + DELIMITER + mark1 + DELIMITER + mark2;
     }
 
 }

@@ -8,6 +8,5 @@ public class Constants {
     public static final String EMPTY_STRING = "";
     public static final String SUM_OF_MARKS_AFTER_SORTING = "Marks sum after sorting: ";
     public static final String ARRAY_FROM_SUMS = "Array from sums of first and second marks: ";
-    public static final int TWO_FOR_DELETE = 2;
     public static final int ZERO = 0;
 }

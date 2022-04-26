@@ -1,8 +1,7 @@
 package by.epam.lab.beans;
 
-import static by.epam.lab.utils.Constants.*;
-
 public class StrongTrial extends Trial {
+    private static final int TWO_FOR_DELETE = 2;
 
     public StrongTrial(String name, int mark1, int mark2) {
         super(name, mark1, mark2);

@@ -3,7 +3,6 @@ import by.epam.lab.beans.LightTrial;
 import by.epam.lab.beans.StrongTrial;
 import by.epam.lab.beans.Trial;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -26,46 +25,45 @@ public class Runner {
                 (new ExtraTrial("Olga", 74, 55, 91)));
         ToIntFunction<Trial> getResultOp =
                 trial -> trial.getMark1() + trial.getMark2();
-        trials.
-                forEach(System.out::println);
+        trials
+                .forEach(System.out::println);
         System.out.println(EMPTY_STRING);
         System.out.println(PASSED_TESTS_COUNT);
-        System.out.println(trials.
-                stream().
-                filter(Trial::isPassed).
-                count());
+        System.out.println(trials
+                .stream()
+                .filter(Trial::isPassed)
+                .count());
         System.out.println(EMPTY_STRING);
         System.out.println(SUM_OF_MARKS_AFTER_SORTING);
-        trials.
-                sort(Comparator.comparingInt(getResultOp));
-        trials.
-                stream().
-                mapToInt(getResultOp).
-                forEach(System.out::println);
+        trials
+                .sort(Comparator.comparingInt(getResultOp));
+        trials
+                .stream()
+                .mapToInt(getResultOp)
+                .forEach(System.out::println);
         System.out.println(EMPTY_STRING);
         System.out.println(FAILED_TESTS);
-        List<Trial> failedTrials =
-                trials.
-                        stream().
-                        filter(trial -> !trial.isPassed()).
-                        map(Trial::getClone).
-                        peek(Trial::clearMarks).
-                        peek(System.out::println).
-                        collect(Collectors.toList());
-        boolean allTrialsAreFailed = failedTrials.
-                stream().
-                noneMatch(Trial::isPassed);
+        List<Trial> failedTrials = trials
+                        .stream()
+                        .filter(trial -> !trial.isPassed())
+                        .map(Trial::getClone)
+                        .peek(Trial::clearMarks)
+                        .peek(System.out::println)
+                        .collect(Collectors.toList());
+        boolean allTrialsAreFailed = failedTrials
+                .stream()
+                .noneMatch(Trial::isPassed);
         System.out.println(EMPTY_STRING);
         System.out.println(ALL_TRIALS_ARE_FAILED + allTrialsAreFailed);
         System.out.println(EMPTY_STRING);
-        int[] sum = trials.
-                stream().
-                mapToInt(getResultOp).
-                toArray();
-        String results = Arrays.
-                stream(sum).
-                mapToObj(String::valueOf).
-                collect(Collectors.joining(DELIMITER));
+        int[] sum = trials
+                .stream()
+                .mapToInt(getResultOp)
+                .toArray();
+        String results = Arrays
+                .stream(sum)
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining(DELIMITER));
         System.out.println(ARRAY_FROM_SUMS);
         System.out.println(results);
     }

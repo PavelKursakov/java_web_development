@@ -16,6 +16,13 @@ public class Trial {
         this.mark2 = mark2;
     }
 
+    public Trial(String[] elements) {
+        this.name = elements[0];
+        this.mark1 = Integer.parseInt(elements[1]);
+        this.mark2 = Integer.parseInt(elements[2]);
+    }
+
+
     public String getName() {
         return name;
     }

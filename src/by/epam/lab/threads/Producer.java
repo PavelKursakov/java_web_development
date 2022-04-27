@@ -1,5 +1,6 @@
 package by.epam.lab.threads;
 
+import by.epam.lab.beans.Trial;
 import by.epam.lab.services.Drop;
 
 import java.io.FileNotFoundException;
@@ -19,9 +20,9 @@ public class Producer implements Runnable {
     public void run() {
         try (Scanner sc = new Scanner(new FileReader(CSV_NAME))) {
             while (sc.hasNextLine()) {
-                drop.put(sc.next());
+                drop.put(new Trial(sc.next().split(DELIMITER)));
             }
-            drop.put(MESSAGE_DONE);
+            drop.put(new Trial(null,0,0));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

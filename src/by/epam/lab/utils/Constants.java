@@ -6,4 +6,5 @@ public class Constants {
     public static final String MESSAGE_PUT = "put > ";
     public static final String MESSAGE_GOT = "GOT > ";
     public static final String MESSAGE_DONE = "DONE";
+    public static final String TABULATION = "\t";
 }

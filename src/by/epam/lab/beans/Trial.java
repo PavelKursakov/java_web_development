@@ -1,5 +1,7 @@
 package by.epam.lab.beans;
 
+import java.util.Objects;
+
 import static by.epam.lab.utils.Constants.*;
 
 public class Trial {
@@ -17,9 +19,7 @@ public class Trial {
     }
 
     public Trial(String[] elements) {
-        this.name = elements[0];
-        this.mark1 = Integer.parseInt(elements[1]);
-        this.mark2 = Integer.parseInt(elements[2]);
+        this(elements[0], Integer.parseInt(elements[1]), Integer.parseInt(elements[2]));
     }
 
 
@@ -50,5 +50,13 @@ public class Trial {
     @Override
     public String toString() {
         return getClass().getSimpleName() + DELIMITER + name + DELIMITER + mark1 + DELIMITER + mark2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trial trial = (Trial) o;
+        return name.equals(trial.name);
     }
 }

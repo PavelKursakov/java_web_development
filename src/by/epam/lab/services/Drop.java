@@ -15,7 +15,7 @@ public class Drop {
             } catch (InterruptedException e) {
             }
         }
-        if (!trial.equals(new Trial(null,0,0))) {
+        if (!trial.equals(new Trial(MESSAGE_DONE,0,0))) {
             System.out.println(MESSAGE_GOT + trial);
         }
         empty = true;

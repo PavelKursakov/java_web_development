@@ -15,7 +15,7 @@ public class Consumer implements Runnable {
     @Override
     public void run() {
         for (Trial trial = drop.take();
-             !(trial.equals(new Trial(null,0,0)));
+             !(trial.equals(new Trial(MESSAGE_PUT,0,0)));
              trial = drop.take()) {
             System.out.println(TABULATION + MESSAGE_PUT + trial);
         }

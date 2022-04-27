@@ -22,7 +22,7 @@ public class Producer implements Runnable {
             while (sc.hasNextLine()) {
                 drop.put(new Trial(sc.next().split(DELIMITER)));
             }
-            drop.put(new Trial(null,0,0));
+            drop.put(new Trial(MESSAGE_DONE,0,0));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

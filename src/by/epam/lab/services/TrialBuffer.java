@@ -13,7 +13,7 @@ public class TrialBuffer {
             try {
                 wait();
             } catch (InterruptedException e) {
-                System.err.println(THE_THREAD_WONT_BE_INTERRUPTED);
+//The thread won’t be interrupted while waiting!
             }
         }
         empty = true;
@@ -26,7 +26,7 @@ public class TrialBuffer {
             try {
                 wait();
             } catch (InterruptedException e) {
-                System.err.println(THE_THREAD_WONT_BE_INTERRUPTED);
+//The thread won’t be interrupted while waiting!
             }
         }
         empty = false;

@@ -12,25 +12,24 @@ import static by.epam.lab.utils.Constants.*;
 
 public class TrialProducer implements Runnable {
     private TrialBuffer trialBuffer;
-    private String csvName;
+    private Scanner sc;
 
-    public TrialProducer(TrialBuffer trialBuffer, String csvName) {
+    public TrialProducer(TrialBuffer trialBuffer, String csvName) throws FileNotFoundException {
         this.trialBuffer = trialBuffer;
-        this.csvName = csvName;
+        this.sc = new Scanner(new FileReader(csvName));
     }
 
     @Override
     public void run() {
-        try (Scanner sc = new Scanner(new FileReader(csvName))) {
+        try {
             while (sc.hasNextLine()) {
                 Trial trial = new Trial(sc.next().split(DELIMITER));
                 System.out.println(MESSAGE_GOT + trial);
                 trialBuffer.put(trial);
             }
-        } catch (FileNotFoundException e) {
-            System.err.println(FILE_IS_NOT_FOUND);
         } finally {
             trialBuffer.put(new FakeTrial());
+            sc.close();
         }
     }
 }

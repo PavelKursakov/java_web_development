@@ -15,9 +15,11 @@ public class TrialConsumer implements Runnable {
 
     @Override
     public void run() {
-        for (Trial trial = trialBuffer.take();
-             trial.getClass() != FakeTrial.class;
-             trial = trialBuffer.take()) {
+        while (true) {
+            Trial trial = trialBuffer.take();
+            if (trial.getClass() == FakeTrial.class) {
+                break;
+            }
             System.out.println(TABULATION + MESSAGE_PUT + trial);
         }
     }

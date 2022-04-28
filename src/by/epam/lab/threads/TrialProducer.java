@@ -24,6 +24,7 @@ public class TrialProducer implements Runnable {
         try (Scanner sc = new Scanner(new FileReader(csvName))) {
             while (sc.hasNextLine()) {
                 Trial trial = new Trial(sc.next().split(DELIMITER));
+                System.out.println(MESSAGE_GOT + trial);
                 trialBuffer.put(trial);
             }
         } catch (FileNotFoundException e) {

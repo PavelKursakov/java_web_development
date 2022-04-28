@@ -7,5 +7,7 @@ public class Constants {
     public static final String MESSAGE_GOT = "GOT > ";
     public static final String TABULATION = "\t";
     public static final String FILE_IS_NOT_FOUND = "File is not found!";
+    public static final String THE_THREAD_WONT_BE_INTERRUPTED =
+            "the thread won’t be interrupted while waiting";
     public static final int ZERO = 0;
 }

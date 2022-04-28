@@ -1,6 +1,5 @@
 package by.epam.lab.services;
 
-import by.epam.lab.beans.FakeTrial;
 import by.epam.lab.beans.Trial;
 
 import static by.epam.lab.utils.Constants.*;
@@ -14,10 +13,8 @@ public class TrialBuffer {
             try {
                 wait();
             } catch (InterruptedException e) {
+                System.err.println(THE_THREAD_WONT_BE_INTERRUPTED);
             }
-        }
-        if (trial.getClass() != FakeTrial.class) {
-            System.out.println(MESSAGE_GOT + trial);
         }
         empty = true;
         notifyAll();
@@ -29,6 +26,7 @@ public class TrialBuffer {
             try {
                 wait();
             } catch (InterruptedException e) {
+                System.err.println(THE_THREAD_WONT_BE_INTERRUPTED);
             }
         }
         empty = false;

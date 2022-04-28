@@ -1,10 +1,11 @@
 package by.epam.lab.services;
 
+import by.epam.lab.FakeTrial;
 import by.epam.lab.beans.Trial;
 
 import static by.epam.lab.utils.Constants.*;
 
-public class Drop {
+public class TrialBuffer {
     private Trial trial;
     private boolean empty = true;
 
@@ -15,7 +16,7 @@ public class Drop {
             } catch (InterruptedException e) {
             }
         }
-        if (!trial.equals(new Trial(MESSAGE_DONE,0,0))) {
+        if (trial.getClass() != FakeTrial.class) {
             System.out.println(MESSAGE_GOT + trial);
         }
         empty = true;

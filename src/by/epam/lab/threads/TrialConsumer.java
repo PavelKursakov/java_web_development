@@ -1,6 +1,6 @@
 package by.epam.lab.threads;
 
-import by.epam.lab.FakeTrial;
+import by.epam.lab.beans.FakeTrial;
 import by.epam.lab.beans.Trial;
 import by.epam.lab.services.TrialBuffer;
 

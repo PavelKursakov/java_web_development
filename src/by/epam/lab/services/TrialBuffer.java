@@ -1,6 +1,6 @@
 package by.epam.lab.services;
 
-import by.epam.lab.FakeTrial;
+import by.epam.lab.beans.FakeTrial;
 import by.epam.lab.beans.Trial;
 
 import static by.epam.lab.utils.Constants.*;

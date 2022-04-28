@@ -1,4 +1,4 @@
-package by.epam.lab;
+package by.epam.lab.beans;
 
 import by.epam.lab.beans.Trial;
 

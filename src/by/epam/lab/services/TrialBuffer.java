@@ -2,8 +2,6 @@ package by.epam.lab.services;
 
 import by.epam.lab.beans.Trial;
 
-import static by.epam.lab.utils.Constants.*;
-
 public class TrialBuffer {
     private Trial trial;
     private boolean empty = true;

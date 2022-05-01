@@ -19,6 +19,7 @@ public class Runner {
         int consumerNumber = getInt(MAX_CONSUMERS_NUMBER, rb);
         int queuePassedLength = getInt(QUEUE_PASSED_LENGTH, rb);
         int queueStrLength = getInt(QUEUE_STR_LENGTH, rb);
+        Lock locker = new ReentrantLock();
         ExecutorService producerService = Executors.newFixedThreadPool(producerNumber);
         ExecutorService consumerService = Executors.newFixedThreadPool(consumerNumber);
         BlockingQueue<Trial> passedTrial = new LinkedBlockingQueue<>(queuePassedLength);
@@ -26,7 +27,7 @@ public class Runner {
         File[] files = new File(folderName).listFiles();
         try {
             TrialWriter trialWriter = new TrialWriter(passedTrial,
-                    new BufferedWriter(new FileWriter(RESULTS_NAME)));
+                    new BufferedWriter(new FileWriter(RESULTS_NAME)), locker);
             Thread writer = new Thread(trialWriter);
             writer.start();
             for (File file : files) {

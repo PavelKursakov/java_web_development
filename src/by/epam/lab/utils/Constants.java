@@ -2,10 +2,14 @@ package by.epam.lab.utils;
 
 public class Constants {
     public static final String DELIMITER = ";";
-    public static final String CSV_NAME = "src/trials.csv";
-    public static final String MESSAGE_PUT = "put > ";
-    public static final String MESSAGE_GOT = "GOT > ";
-    public static final String TABULATION = "\t";
-    public static final String FILE_IS_NOT_FOUND = "File is not found!";
+    public static final String EMPTY_STRING = "";
+    public static final String RESULTS_NAME = "src/results.csv";
+    public static final String REGEX_FOR_CSV_FILE = ".*\\.csv";
+    public static final String TABULATION = "\n";
     public static final int ZERO = 0;
+    public static final String FOLDER_NAME = "folderName";
+    public static final String MAX_PRODUCERS_NUMBER = "maxProducersNumber";
+    public static final String MAX_CONSUMERS_NUMBER = "maxConsumersNumber";
+    public static final String QUEUE_STR_LENGTH = "queueStrLength";
+    public static final String QUEUE_PASSED_LENGTH = "queuePassedLength";
 }

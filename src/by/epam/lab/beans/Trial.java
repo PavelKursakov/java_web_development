@@ -65,6 +65,7 @@ public class Trial {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + DELIMITER + name + DELIMITER + mark1 + DELIMITER + mark2;
+        return getClass().getSimpleName() + DELIMITER + name + DELIMITER + mark1 +
+                DELIMITER + mark2 + DELIMITER + isPassed();
     }
 }

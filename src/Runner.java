@@ -24,7 +24,6 @@ public class Runner {
         BlockingQueue<Trial> passedTrial = new LinkedBlockingQueue<>(queuePassedLength);
         BlockingQueue<String> strQueue = new LinkedBlockingQueue<>(queueStrLength);
         File[] files = new File(folderName).listFiles();
-        Lock locker = new ReentrantLock();
         try {
             TrialWriter trialWriter = new TrialWriter(passedTrial,
                     new BufferedWriter(new FileWriter(RESULTS_NAME)));
@@ -43,8 +42,6 @@ public class Runner {
             producerService.shutdown();
             consumerService.shutdown();
             while (!producerService.isTerminated() || !consumerService.isTerminated()) {
-                locker.lock();
-                locker.unlock();
             }
             writer.interrupt();
 

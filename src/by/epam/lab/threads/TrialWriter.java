@@ -28,19 +28,20 @@ public class TrialWriter implements Runnable {
 
     @Override
     public void run() {
-        lock.lock();
+//        lock.lock();
             try {
-                while (latch.getCount() > 0) {
+                while (!Thread.currentThread().isInterrupted()) {
                     if (trialBlockingQueue.remainingCapacity() == 0) {
                         latch.countDown();
                         writeInto();
                     }
                 }
+                writeInto();
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
             finally {
-                lock.unlock();
+//                lock.unlock();
             }
 
     }

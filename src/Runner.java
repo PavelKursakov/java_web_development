@@ -20,7 +20,7 @@ public class Runner {
         int queuePassedLength = getInt(QUEUE_PASSED_LENGTH, rb);
         int queueStrLength = getInt(QUEUE_STR_LENGTH, rb);
         Lock locker = new ReentrantLock();
-        CountDownLatch latch = new CountDownLatch(2);
+        CountDownLatch stopPutting = new CountDownLatch(queueStrLength);
         ExecutorService producerService = Executors.newFixedThreadPool(producerNumber);
         ExecutorService consumerService = Executors.newFixedThreadPool(consumerNumber);
         BlockingQueue<Trial> passedTrial = new LinkedBlockingQueue<>(queuePassedLength);
@@ -28,7 +28,7 @@ public class Runner {
         File[] files = new File(folderName).listFiles();
         try {
             TrialWriter trialWriter = new TrialWriter(passedTrial,
-                    new BufferedWriter(new FileWriter(RESULTS_NAME)), latch);
+                    new BufferedWriter(new FileWriter(RESULTS_NAME)), stopPutting);
             Thread writer = new Thread(trialWriter);
             writer.start();
             for (File file : files) {
@@ -36,13 +36,14 @@ public class Runner {
                     TrialProducer trialProducer =
                             new TrialProducer(strQueue, file.toString());
                     TrialConsumer trialConsumer =
-                            new TrialConsumer(passedTrial, strQueue);
+                            new TrialConsumer(passedTrial, strQueue, stopPutting);
                     producerService.execute(trialProducer);
                     consumerService.execute(trialConsumer);
                 }
             }
             producerService.shutdown();
             consumerService.shutdown();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

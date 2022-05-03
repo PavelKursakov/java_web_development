@@ -6,8 +6,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static by.epam.lab.utils.Constants.*;
 
@@ -15,8 +13,6 @@ public class TrialWriter implements Runnable {
     private final BlockingQueue<Trial> trialBlockingQueue;
     private final BufferedWriter bufferedWriter;
     private CountDownLatch latch;
-    private ReentrantLock lock = new ReentrantLock();
-    private Condition condition = lock.newCondition();
 
     public TrialWriter(BlockingQueue<Trial> trialBlockingQueue,
                        BufferedWriter bufferedWriter,
@@ -28,21 +24,17 @@ public class TrialWriter implements Runnable {
 
     @Override
     public void run() {
-        lock.lock();
-            try {
-                while (latch.getCount() > 0) {
-                    if (trialBlockingQueue.remainingCapacity() == 0) {
-                        latch.countDown();
-                        writeInto();
-                    }
+        try {
+            while (latch.getCount() != 0) {
+                if (trialBlockingQueue.remainingCapacity() == 0) {
+                    latch.countDown();
+                    writeInto();
                 }
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
             }
-            finally {
-                lock.unlock();
-            }
-
+            writeInto();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     private void writeInto() throws IOException {

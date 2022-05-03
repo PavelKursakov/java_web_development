@@ -12,4 +12,5 @@ public class Constants {
     public static final String MAX_CONSUMERS_NUMBER = "maxConsumersNumber";
     public static final String QUEUE_STR_LENGTH = "queueStrLength";
     public static final String QUEUE_PASSED_LENGTH = "queuePassedLength";
+    public static final String TRIALS = "trials";
 }

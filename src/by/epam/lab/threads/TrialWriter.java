@@ -5,34 +5,42 @@ import by.epam.lab.beans.Trial;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.locks.Lock;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static by.epam.lab.utils.Constants.*;
 
 public class TrialWriter implements Runnable {
     private final BlockingQueue<Trial> trialBlockingQueue;
     private final BufferedWriter bufferedWriter;
-    private final Lock locker;
+    private CountDownLatch latch;
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition condition = lock.newCondition();
 
-    public TrialWriter(BlockingQueue<Trial> trialBlockingQueue, BufferedWriter bufferedWriter, Lock locker) {
+    public TrialWriter(BlockingQueue<Trial> trialBlockingQueue,
+                       BufferedWriter bufferedWriter,
+                       CountDownLatch latch) {
         this.trialBlockingQueue = trialBlockingQueue;
         this.bufferedWriter = bufferedWriter;
-        this.locker = locker;
+        this.latch = latch;
     }
 
     @Override
     public void run() {
+        lock.lock();
             try {
-                locker.lock();
-                while (!Thread.currentThread().isInterrupted()) {
+                while (latch.getCount() > 0) {
                     if (trialBlockingQueue.remainingCapacity() == 0) {
+                        latch.countDown();
                         writeInto();
                     }
                 }
-                locker.unlock();
-                writeInto();
             } catch (IOException e) {
                 System.err.println(e.getMessage());
+            }
+            finally {
+                lock.unlock();
             }
 
     }

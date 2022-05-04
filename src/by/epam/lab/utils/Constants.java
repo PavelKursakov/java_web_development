@@ -3,7 +3,7 @@ package by.epam.lab.utils;
 public class Constants {
     public static final String DELIMITER = ";";
     public static final String EMPTY_STRING = "";
-    public static final String RESULTS_NAME = "src/results.csv";
+    public static final String RESULTS_NAME = "src/resources/results.csv";
     public static final String REGEX_FOR_CSV_FILE = ".*\\.csv";
     public static final String TABULATION = "\n";
     public static final int ZERO = 0;

@@ -12,11 +12,10 @@ import static by.epam.lab.utils.Constants.*;
 public class TrialWriter implements Runnable {
     private final BlockingQueue<Trial> trialBlockingQueue;
     private final BufferedWriter bufferedWriter;
-    private CountDownLatch latch;
+    private final CountDownLatch latch;
 
     public TrialWriter(BlockingQueue<Trial> trialBlockingQueue,
-                       BufferedWriter bufferedWriter,
-                       CountDownLatch latch) {
+                       BufferedWriter bufferedWriter, CountDownLatch latch) {
         this.trialBlockingQueue = trialBlockingQueue;
         this.bufferedWriter = bufferedWriter;
         this.latch = latch;
@@ -25,23 +24,14 @@ public class TrialWriter implements Runnable {
     @Override
     public void run() {
         try {
-            while (latch.getCount() != 0) {
-                if (trialBlockingQueue.remainingCapacity() == 0) {
-                    latch.countDown();
-                    writeInto();
-                }
+            int i = 0;
+            while (latch.getCount() > 0) {
+                bufferedWriter.write(trialBlockingQueue.take() + TABULATION);
+                bufferedWriter.flush();
+                i++;
             }
-            writeInto();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
         }
-    }
-
-    private void writeInto() throws IOException {
-        for (Trial element : trialBlockingQueue) {
-            bufferedWriter.write(element + TABULATION);
-        }
-        bufferedWriter.flush();
-        trialBlockingQueue.clear();
     }
 }

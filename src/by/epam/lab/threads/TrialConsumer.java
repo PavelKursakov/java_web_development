@@ -10,26 +10,30 @@ import static by.epam.lab.utils.Constants.*;
 public class TrialConsumer implements Runnable {
     private final BlockingQueue<Trial> trialBlockingQueue;
     private final BlockingQueue<String> stringBlockingQueue;
-    private CountDownLatch stop;
+    private StringBuilder sb;
 
     public TrialConsumer(BlockingQueue<Trial> trialBlockingQueue,
-                         BlockingQueue<String> stringBlockingQueue, CountDownLatch stop) {
+                         BlockingQueue<String> stringBlockingQueue, StringBuilder sb) {
         this.trialBlockingQueue = trialBlockingQueue;
         this.stringBlockingQueue = stringBlockingQueue;
-        this.stop = stop;
+        this.sb = sb;
     }
 
     @Override
     public void run() {
         try {
-            while (stop.getCount() != 0) {
+            while (true) {
                 String strTrial = stringBlockingQueue.take();
+                if (strTrial.equals("DONE")){
+                    break;
+                }
                 Trial trial = new Trial(strTrial.split(DELIMITER));
+                System.out.println(strTrial);
                 if (trial.isPassed()) {
                     trialBlockingQueue.put(trial);
                 }
-                stop.countDown();
             }
+            System.out.println("FINISH");
         } catch (InterruptedException e) {
             System.err.println(e.getMessage());
         }

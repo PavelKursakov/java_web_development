@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 
-
 public class TrialProducer implements Runnable {
     private final BlockingQueue<String> strQueue;
     private String csvName;
@@ -18,10 +17,10 @@ public class TrialProducer implements Runnable {
     @Override
     public void run() {
         try (Scanner sc = new Scanner(new FileReader(csvName))) {
-            Thread.sleep(500);
             while (sc.hasNextLine()) {
                 strQueue.put(sc.next());
             }
+            strQueue.put("DONE");
         } catch (FileNotFoundException | InterruptedException e) {
             System.err.println(e);
         }

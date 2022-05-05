@@ -3,7 +3,6 @@ package by.epam.lab.threads;
 import by.epam.lab.beans.Trial;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CountDownLatch;
 
 import static by.epam.lab.utils.Constants.*;
 
@@ -13,10 +12,9 @@ public class TrialConsumer implements Runnable {
     private StringBuilder sb;
 
     public TrialConsumer(BlockingQueue<Trial> trialBlockingQueue,
-                         BlockingQueue<String> stringBlockingQueue, StringBuilder sb) {
+                         BlockingQueue<String> stringBlockingQueue) {
         this.trialBlockingQueue = trialBlockingQueue;
         this.stringBlockingQueue = stringBlockingQueue;
-        this.sb = sb;
     }
 
     @Override

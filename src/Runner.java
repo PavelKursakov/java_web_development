@@ -4,7 +4,8 @@ import by.epam.lab.threads.TrialProducer;
 import by.epam.lab.threads.TrialWriter;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
 
@@ -17,39 +18,36 @@ public class Runner {
         int producerNumber = getInt(MAX_PRODUCERS_NUMBER, rb);
         int consumerNumber = getInt(MAX_CONSUMERS_NUMBER, rb);
         int queueStrLength = getInt(QUEUE_STR_LENGTH, rb);
-        CountDownLatch stop = new CountDownLatch(2);
         ExecutorService producerService = Executors.newFixedThreadPool(producerNumber);
         ExecutorService consumerService = Executors.newFixedThreadPool(consumerNumber);
-        BlockingQueue<Trial> passedTrial = new LinkedBlockingQueue<>(30);
+        List<Trial> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
         BlockingQueue<String> strQueue = new LinkedBlockingQueue<>(queueStrLength);
         File[] files = new File(folderName).listFiles();
         try {
-            TrialConsumer trialConsumer1 =
-                    new TrialConsumer(passedTrial, strQueue);
-            TrialConsumer trialConsumer2 =
-                    new TrialConsumer(passedTrial, strQueue);
-            TrialConsumer trialConsumer3 =
-                    new TrialConsumer(passedTrial, strQueue);
-
-            consumerService.execute(trialConsumer1);
-            consumerService.execute(trialConsumer2);
-            consumerService.execute(trialConsumer3);
-
-            TrialWriter trialWriter = new TrialWriter(passedTrial,
-                    new BufferedWriter(new FileWriter(RESULTS_NAME)), stop);
-            Thread writer = new Thread(trialWriter);
-            ExecutorService writerExecutor = Executors.newSingleThreadExecutor();
-            writerExecutor.execute(writer);
-            writer.join();
-            for (File file : files) {
-                if (file.toString().matches(REGEX_FOR_CSV_FILE)) {
-                    producerService.execute(new TrialProducer(strQueue, file.toString()));
-                }
+            for (int i = 0; i < consumerNumber; i++) {
+                consumerService.execute(new TrialConsumer(copyOnWriteArrayList, strQueue));
             }
+
+            TrialWriter trialWriter = new TrialWriter(copyOnWriteArrayList,
+                    new BufferedWriter(new FileWriter(RESULTS_NAME)));
+
+            Thread writer = new Thread(trialWriter);
+
+            Arrays
+                    .stream(files)
+                    .filter(file -> file.toString().matches(REGEX_FOR_CSV_FILE))
+                    .forEach(file -> producerService.execute(
+                            new TrialProducer(strQueue, file.toString())));
+
+            writer.start();
+            writer.join();
+
+            for (int i = 0; i < producerNumber; i++) {
+                strQueue.put("DONE");
+            }
+
             producerService.shutdown();
-            stop.countDown();
             consumerService.shutdown();
-            writerExecutor.shutdown();
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

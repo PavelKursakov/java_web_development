@@ -20,7 +20,6 @@ public class TrialProducer implements Runnable {
             while (sc.hasNextLine()) {
                 strQueue.put(sc.next());
             }
-            strQueue.put("DONE");
         } catch (FileNotFoundException | InterruptedException e) {
             System.err.println(e);
         }

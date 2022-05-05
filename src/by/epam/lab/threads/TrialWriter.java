@@ -4,31 +4,30 @@ import by.epam.lab.beans.Trial;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CountDownLatch;
+
+import java.util.List;
 
 import static by.epam.lab.utils.Constants.*;
 
 public class TrialWriter implements Runnable {
-    private final BlockingQueue<Trial> trialBlockingQueue;
+    private final List<Trial> copyOnWriteArrayList;
     private final BufferedWriter bufferedWriter;
-    private final CountDownLatch latch;
 
-    public TrialWriter(BlockingQueue<Trial> trialBlockingQueue,
-                       BufferedWriter bufferedWriter, CountDownLatch latch) {
-        this.trialBlockingQueue = trialBlockingQueue;
+    public TrialWriter(List<Trial> copyOnWriteArrayList,
+                       BufferedWriter bufferedWriter) {
+        this.copyOnWriteArrayList = copyOnWriteArrayList;
         this.bufferedWriter = bufferedWriter;
-        this.latch = latch;
     }
 
     @Override
     public void run() {
         try {
-            int i = 0;
-            while (latch.getCount() > 0) {
-                bufferedWriter.write(trialBlockingQueue.take() + TABULATION);
+            Thread.sleep(1000);
+            while (!copyOnWriteArrayList.isEmpty()) {
+                Trial trial = copyOnWriteArrayList.get(0);
+                bufferedWriter.write(trial + TABULATION);
                 bufferedWriter.flush();
-                i++;
+                copyOnWriteArrayList.remove(0);
             }
         } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());

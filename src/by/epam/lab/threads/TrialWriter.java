@@ -5,30 +5,37 @@ import by.epam.lab.beans.Trial;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CountDownLatch;
 
 import static by.epam.lab.utils.Constants.*;
 
 public class TrialWriter implements Runnable {
-    private final List<Trial> copyOnWriteArrayList;
+    private final ConcurrentLinkedQueue<Trial> linkedQueue;
+    private final CountDownLatch latch;
     private final BufferedWriter bufferedWriter;
 
-    public TrialWriter(List<Trial> copyOnWriteArrayList,
-                       BufferedWriter bufferedWriter) {
-        this.copyOnWriteArrayList = copyOnWriteArrayList;
+    public TrialWriter(ConcurrentLinkedQueue<Trial> linkedQueue,
+                       CountDownLatch latch, BufferedWriter bufferedWriter) {
+        this.linkedQueue = linkedQueue;
+        this.latch = latch;
         this.bufferedWriter = bufferedWriter;
     }
 
     @Override
     public void run() {
         try {
-            Thread.sleep(1000);
-            while (!copyOnWriteArrayList.isEmpty()) {
-                Trial trial = copyOnWriteArrayList.get(0);
-                bufferedWriter.write(trial + TABULATION);
-                bufferedWriter.flush();
-                copyOnWriteArrayList.remove(0);
+            latch.await();
+            System.out.println("WRITER STARTED");
+            while (linkedQueue.size() > 0) {
+                Trial trial = linkedQueue.poll();
+                if(trial != null) {
+                    bufferedWriter.write(trial + TABULATION);
+                    bufferedWriter.flush();
+                }
             }
+            System.out.println("WRITER IS FINISHED");
         } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
         }

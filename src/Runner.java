@@ -5,7 +5,6 @@ import by.epam.lab.threads.TrialWriter;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
 
@@ -20,34 +19,46 @@ public class Runner {
         int queueStrLength = getInt(QUEUE_STR_LENGTH, rb);
         ExecutorService producerService = Executors.newFixedThreadPool(producerNumber);
         ExecutorService consumerService = Executors.newFixedThreadPool(consumerNumber);
-        List<Trial> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
+        ConcurrentLinkedQueue<Trial> concurrentLinkedQueue = new ConcurrentLinkedQueue<>();
         BlockingQueue<String> strQueue = new LinkedBlockingQueue<>(queueStrLength);
         File[] files = new File(folderName).listFiles();
+        if(files == null) {
+            files = new File[0];
+            System.out.println("File is not found");
+        }
         try {
+            int latchCount = (int) Arrays.stream(files)
+                    .filter(file -> file.toString().matches(REGEX_FOR_CSV_FILE))
+                    .count();
+            if(latchCount == 0) {
+                System.out.println("CSV files are not found");
+            }
+            CountDownLatch producerLatch = new CountDownLatch(latchCount);
+            CountDownLatch consLatch = new CountDownLatch(consumerNumber);
+            CountDownLatch writerLatch = new CountDownLatch(1);
             for (int i = 0; i < consumerNumber; i++) {
-                consumerService.execute(new TrialConsumer(copyOnWriteArrayList, strQueue));
+                consumerService.execute(new TrialConsumer(concurrentLinkedQueue, strQueue,consLatch));
             }
 
-            TrialWriter trialWriter = new TrialWriter(copyOnWriteArrayList,
-                    new BufferedWriter(new FileWriter(RESULTS_NAME)));
+            TrialWriter trialWriter = new TrialWriter(concurrentLinkedQueue, writerLatch
+                    , new BufferedWriter(new FileWriter(RESULTS_NAME)));
 
-            Thread writer = new Thread(trialWriter);
-
+            ExecutorService writerExecutor = Executors.newSingleThreadExecutor();
+            writerExecutor.execute(trialWriter);
             Arrays
                     .stream(files)
                     .filter(file -> file.toString().matches(REGEX_FOR_CSV_FILE))
                     .forEach(file -> producerService.execute(
-                            new TrialProducer(strQueue, file.toString())));
-
-            writer.start();
-            writer.join();
-
+                            new TrialProducer(strQueue, producerLatch, file.toString())));
+            producerLatch.await();
+            producerService.shutdown();
             for (int i = 0; i < producerNumber; i++) {
                 strQueue.put("DONE");
             }
-
-            producerService.shutdown();
+            consLatch.await();
+            writerLatch.countDown();
             consumerService.shutdown();
+            writerExecutor.shutdown();
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

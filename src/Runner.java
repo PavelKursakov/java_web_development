@@ -1,3 +1,4 @@
+import by.epam.lab.beans.Flag;
 import by.epam.lab.beans.Trial;
 import by.epam.lab.threads.TrialConsumer;
 import by.epam.lab.threads.TrialProducer;
@@ -21,6 +22,7 @@ public class Runner {
         ExecutorService consumerService = Executors.newFixedThreadPool(consumerNumber);
         ConcurrentLinkedQueue<Trial> concurrentLinkedQueue = new ConcurrentLinkedQueue<>();
         BlockingQueue<String> strQueue = new LinkedBlockingQueue<>(queueStrLength);
+        Flag flag = new Flag();
         File[] files = new File(folderName).listFiles();
         if(files == null) {
             files = new File[0];
@@ -34,14 +36,12 @@ public class Runner {
                 System.out.println("CSV files are not found");
             }
             CountDownLatch producerLatch = new CountDownLatch(latchCount);
-            CountDownLatch consLatch = new CountDownLatch(consumerNumber);
-            CountDownLatch writerLatch = new CountDownLatch(1);
             for (int i = 0; i < consumerNumber; i++) {
-                consumerService.execute(new TrialConsumer(concurrentLinkedQueue, strQueue,consLatch));
+                consumerService.execute(new TrialConsumer(concurrentLinkedQueue, strQueue));
             }
 
-            TrialWriter trialWriter = new TrialWriter(concurrentLinkedQueue, writerLatch
-                    , new BufferedWriter(new FileWriter(RESULTS_NAME)));
+            TrialWriter trialWriter = new TrialWriter(concurrentLinkedQueue
+                    , new BufferedWriter(new FileWriter(RESULTS_NAME)),flag);
 
             ExecutorService writerExecutor = Executors.newSingleThreadExecutor();
             writerExecutor.execute(trialWriter);
@@ -55,9 +55,8 @@ public class Runner {
             for (int i = 0; i < producerNumber; i++) {
                 strQueue.put("DONE");
             }
-            consLatch.await();
-            writerLatch.countDown();
             consumerService.shutdown();
+            flag.stopProducing();
             writerExecutor.shutdown();
 
         } catch (IOException | InterruptedException e) {

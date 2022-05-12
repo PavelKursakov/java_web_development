@@ -21,12 +21,16 @@ public class TrialProducer implements Runnable {
     public void run() {
         try (Scanner sc = new Scanner(new FileReader(csvName))) {
             while (sc.hasNextLine()) {
-                strQueue.put(sc.next());
+                try {
+                    strQueue.put(sc.next());
+                }catch (InterruptedException e){
+                    //Thread will not be Interrupted!
+                }
             }
             latch.countDown();
             System.out.println("PRODUCER IS FINISHED");
-        } catch (FileNotFoundException | InterruptedException e) {
-            System.err.println(e);
+        } catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
         }
     }
 }

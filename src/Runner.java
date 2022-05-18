@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static by.epam.lab.utils.Constants.*;
 
 public class Runner {
+    private static final Logger LOGGER = Logger.getLogger(Runner.class.getName());
     public static void main(String[] args) {
         ResourceBundle rb = ResourceBundle.getBundle(TRIALS);
         String folderName = rb.getString(FOLDER_NAME);
@@ -28,57 +31,47 @@ public class Runner {
         Queue<Trial> concurrentLinkedQueue = new ConcurrentLinkedQueue<>();
         BlockingQueue<String> strQueue = new LinkedBlockingQueue<>(queueStrLength);
         Flag flag = new Flag();
-        File[] files = new File(folderName).listFiles();
+        String[] files = new File(folderName).list();
         try {
-            if (files == null) {
-                throw new SourceException(folderName + IS_NOT_FOUND);
-            }
             List<String> stringList = Arrays
                     .stream(files)
-                    .map(File::toString)
                     .filter(s -> s.matches(REGEX_FOR_CSV_FILE))
+                    .map(s -> FOLDER_SRC + s)
                     .collect(Collectors.toList());
-
-            if (stringList.isEmpty()) {
-                throw new SourceException(CSV_FILES_ARE_NOT_FOUND);
-            }
 
             CountDownLatch producerLatch = new CountDownLatch(stringList.size());
 
             ExecutorService writerExecutor = Executors.newSingleThreadExecutor();
             writerExecutor.execute(new TrialWriter(concurrentLinkedQueue
-                    , new BufferedWriter(new FileWriter(RESULTS_NAME)), flag));
+                    , RESULTS_NAME, flag));
 
             IntStream
                     .range(0,consumerNumber)
                     .forEach(i -> consumerService.execute(
                             new TrialConsumer(concurrentLinkedQueue,strQueue,i)));
 
-            stringList.forEach(file -> producerService.execute(
-                    new TrialProducer(strQueue, producerLatch, file)));
+            stringList.forEach(str -> producerService.execute(
+                    new TrialProducer(strQueue, producerLatch, str)));
 
             producerLatch.await();
             producerService.shutdown();
-
             IntStream
                     .range(0,producerNumber)
                     .forEach(i -> {
                         try {
                             strQueue.put(DONE);
                         } catch (InterruptedException e) {
-                            //Thread will not be Interrupted!
+                            //Thread will not be Interrupted while waiting!
+                            LOGGER.log(Level.WARNING, e.getMessage());
                         }
                     });
             consumerService.shutdown();
             flag.stopProducing();
             writerExecutor.shutdown();
 
-        }  catch (InterruptedException e){
-            //Thread will not be Interrupted!
-        } catch (SourceException e) {
-            System.err.println(SOME_WRONG_RESOURCE + e.getMessage());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+        } catch (InterruptedException e){
+            //Thread will not be Interrupted while waiting!
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
     }
 

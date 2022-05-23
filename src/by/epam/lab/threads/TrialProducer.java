@@ -26,15 +26,16 @@ public class TrialProducer implements Runnable {
             while (sc.hasNextLine()) {
                 try {
                     strQueue.put(sc.next());
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     //Thread will not be Interrupted while waiting!
-                    LOGGER.log(Level.WARNING,e.getMessage());
+                    LOGGER.log(Level.WARNING, e.getMessage());
                 }
             }
-            latch.countDown();
             System.out.println("PRODUCER IS FINISHED");
         } catch (FileNotFoundException e) {
-            System.err.println(e.getMessage());
+            LOGGER.log(Level.WARNING, e.getMessage());
+            latch.countDown();
+        } finally {
             latch.countDown();
         }
     }

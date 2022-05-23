@@ -8,6 +8,7 @@ public class Constants {
     public static final String TABULATION = "\n";
     public static final int ZERO = 0;
     public static final String DONE = "DONE";
+    public static final String EMPTY_STR = "";
     public static final String SOME_WRONG_RESOURCE = "Some wrong resource: ";
     public static final String FOLDER_NAME = "folderName";
     public static final String MAX_PRODUCERS_NUMBER = "maxProducersNumber";

@@ -25,22 +25,25 @@ public class TrialConsumer implements Runnable {
 
     @Override
     public void run() {
-        try {
-            while (true) {
-                String strTrial = stringBlockingQueue.take();
-                if (strTrial.equals(DONE)){
-                    break;
-                }
-                Trial trial = new Trial(strTrial.split(DELIMITER));
-                System.out.println(trial);
-                if (trial.isPassed()) {
-                    trialQueue.add(trial);
-                }
+
+        while (true) {
+            String strTrial = EMPTY_STR;
+            try {
+                strTrial = stringBlockingQueue.take();
+            } catch (InterruptedException e) {
+                //Thread will not be Interrupted while waiting!
+                LOGGER.log(Level.WARNING, e.getMessage());
+                continue;
             }
-            System.out.println("Consumer " + id + " FINISH");
-        } catch (InterruptedException e) {
-            //Thread will not be Interrupted!
-            LOGGER.log(Level.WARNING, e.getMessage());
+            if (DONE.equals(strTrial)) {
+                break;
+            }
+            Trial trial = new Trial(strTrial.split(DELIMITER));
+            System.out.println(trial);
+            if (trial.isPassed()) {
+                trialQueue.add(trial);
+            }
         }
+        System.out.println("Consumer " + id + " FINISH");
     }
 }

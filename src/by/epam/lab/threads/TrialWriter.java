@@ -2,12 +2,14 @@ package by.epam.lab.threads;
 
 import by.epam.lab.beans.Flag;
 import by.epam.lab.beans.Trial;
+import by.epam.lab.exceptions.WriteRuntimeException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,12 +39,17 @@ public class TrialWriter implements Runnable {
                 } else {
                     i++;
                     System.out.println(i + " Empty use");
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (InterruptedException e) {
+                        LOGGER.log(Level.WARNING, e.getMessage());
+                    }
                 }
             }
             bf.flush();
             System.out.println("WRITER IS FINISHED");
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e.getMessage());
+            throw new WriteRuntimeException(e.getMessage());
         }
     }
 }

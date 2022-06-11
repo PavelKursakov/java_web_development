@@ -13,23 +13,21 @@ public class TrialConsumer implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(TrialConsumer.class.getName());
     private final Queue<Trial> trialQueue;
     private final BlockingQueue<String> stringBlockingQueue;
-    private int id;
-
 
     public TrialConsumer(Queue<Trial> trialQueue,
-                         BlockingQueue<String> stringBlockingQueue, int id) {
+                         BlockingQueue<String> stringBlockingQueue) {
         this.trialQueue = trialQueue;
         this.stringBlockingQueue = stringBlockingQueue;
-        this.id = id;
     }
 
     @Override
     public void run() {
 
         while (true) {
-            String strTrial = EMPTY_STR;
+            String strTrial;
             try {
                 strTrial = stringBlockingQueue.take();
+                System.out.println(strTrial);
             } catch (InterruptedException e) {
                 //Thread will not be Interrupted while waiting!
                 LOGGER.log(Level.WARNING, e.getMessage());
@@ -44,6 +42,5 @@ public class TrialConsumer implements Runnable {
                 trialQueue.add(trial);
             }
         }
-        System.out.println("Consumer " + id + " FINISH");
     }
 }

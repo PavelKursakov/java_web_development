@@ -1,6 +1,4 @@
-import by.epam.lab.beans.Flag;
 import by.epam.lab.beans.Trial;
-import by.epam.lab.exceptions.SourceException;
 import by.epam.lab.threads.TrialConsumer;
 import by.epam.lab.threads.TrialProducer;
 import by.epam.lab.threads.TrialWriter;
@@ -20,6 +18,7 @@ import static by.epam.lab.utils.Constants.*;
 
 public class Runner {
     private static final Logger LOGGER = Logger.getLogger(Runner.class.getName());
+
     public static void main(String[] args) {
         ResourceBundle rb = ResourceBundle.getBundle(TRIALS);
         String folderName = rb.getString(FOLDER_NAME);
@@ -30,49 +29,45 @@ public class Runner {
         ExecutorService consumerService = Executors.newFixedThreadPool(consumerNumber);
         Queue<Trial> concurrentLinkedQueue = new ConcurrentLinkedQueue<>();
         BlockingQueue<String> strQueue = new LinkedBlockingQueue<>(queueStrLength);
-        Flag flag = new Flag();
+        TrialWriter writer = new TrialWriter(concurrentLinkedQueue, RESULTS_NAME);
         String[] files = new File(folderName).list();
+        List<String> stringList = Arrays
+                .stream(files)
+                .filter(s -> s.matches(REGEX_FOR_CSV_FILE))
+                .map(s -> FOLDER_SRC + s)
+                .collect(Collectors.toList());
+
+        System.out.println(stringList);
+        CountDownLatch producerLatch = new CountDownLatch(stringList.size());
+
+        ExecutorService writerExecutor = Executors.newSingleThreadExecutor();
+        writerExecutor.execute(writer);
+
+        IntStream.range(0, consumerNumber)
+                .forEach(i -> consumerService.execute(
+                        new TrialConsumer(concurrentLinkedQueue, strQueue)));
+
+        stringList.forEach(str -> producerService.execute(
+                new TrialProducer(strQueue, producerLatch, str)));
+
         try {
-            List<String> stringList = Arrays
-                    .stream(files)
-                    .filter(s -> s.matches(REGEX_FOR_CSV_FILE))
-                    .map(s -> FOLDER_SRC + s)
-                    .collect(Collectors.toList());
-
-            CountDownLatch producerLatch = new CountDownLatch(stringList.size());
-
-            ExecutorService writerExecutor = Executors.newSingleThreadExecutor();
-            writerExecutor.execute(new TrialWriter(concurrentLinkedQueue
-                    , RESULTS_NAME, flag));
-
-            IntStream
-                    .range(0,consumerNumber)
-                    .forEach(i -> consumerService.execute(
-                            new TrialConsumer(concurrentLinkedQueue,strQueue,i)));
-
-            stringList.forEach(str -> producerService.execute(
-                    new TrialProducer(strQueue, producerLatch, str)));
-
             producerLatch.await();
-            producerService.shutdown();
-            IntStream
-                    .range(0,producerNumber)
-                    .forEach(i -> {
-                        try {
-                            strQueue.put(DONE);
-                        } catch (InterruptedException e) {
-                            //Thread will not be Interrupted while waiting!
-                            LOGGER.log(Level.WARNING, e.getMessage());
-                        }
-                    });
-            consumerService.shutdown();
-            flag.stopProducing();
-            writerExecutor.shutdown();
-
-        } catch (InterruptedException e){
+        } catch (InterruptedException e) {
             //Thread will not be Interrupted while waiting!
             LOGGER.log(Level.WARNING, e.getMessage());
         }
+        producerService.shutdown();
+        IntStream.range(0, producerNumber)
+                .forEach(i -> {
+                    while (true) {
+                        if (strQueue.add(DONE)) {
+                            break;
+                        }
+                    }
+                });
+        consumerService.shutdown();
+        writer.stopWorking();
+        writerExecutor.shutdown();
     }
 
     private static int getInt(String s, ResourceBundle rb) {

@@ -1,5 +1,7 @@
 package by.epam.lab.threads;
 
+import by.epam.lab.utils.Constants;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
@@ -24,6 +26,7 @@ public class TrialProducer implements Runnable {
     public void run() {
         try (Scanner sc = new Scanner(new FileReader(csvName))) {
             while (sc.hasNextLine()) {
+                System.out.println("Producer");
                 try {
                     strQueue.put(sc.next());
                 } catch (InterruptedException e) {
@@ -31,10 +34,9 @@ public class TrialProducer implements Runnable {
                     LOGGER.log(Level.WARNING, e.getMessage());
                 }
             }
-            System.out.println("PRODUCER IS FINISHED");
+            System.out.println(Constants.PRODUCER_FINISH);
         } catch (FileNotFoundException e) {
             LOGGER.log(Level.WARNING, e.getMessage());
-            latch.countDown();
         } finally {
             latch.countDown();
         }

@@ -16,4 +16,7 @@ public class Constants {
     public static final String WRITER_IS_FINISH = "WRITER IS FINISHED";
     public static final String WRITER_STARTED = "WRITER STARTED";
     public static final String PRODUCER_FINISH = "PRODUCER IS FINISHED";
+    public static final String EMPTY_STRING = "";
+    public static final String PRODUCER = "Producer";
+    public static final String INCORRECT_WAITING = "Incorrect waiting for the latch";
 }

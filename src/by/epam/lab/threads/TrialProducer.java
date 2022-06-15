@@ -26,11 +26,10 @@ public class TrialProducer implements Runnable {
     public void run() {
         try (Scanner sc = new Scanner(new FileReader(csvName))) {
             while (sc.hasNextLine()) {
-                System.out.println("Producer");
+                System.out.println(Constants.PRODUCER);
                 try {
                     strQueue.put(sc.next());
                 } catch (InterruptedException e) {
-                    //Thread will not be Interrupted while waiting!
                     LOGGER.log(Level.WARNING, e.getMessage());
                 }
             }

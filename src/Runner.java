@@ -53,17 +53,13 @@ public class Runner {
         try {
             producerLatch.await();
         } catch (InterruptedException e) {
-            //Thread will not be Interrupted while waiting!
             LOGGER.log(Level.WARNING, e.getMessage());
+            throw new IllegalStateException(INCORRECT_WAITING);
         }
         producerService.shutdown();
         IntStream.range(0, producerNumber)
                 .forEach(i -> {
-                    while (true) {
-                        if (strQueue.add(DONE)) {
-                            break;
-                        }
-                    }
+                        strQueue.add(DONE);
                 });
         consumerService.shutdown();
         writer.stopWorking();

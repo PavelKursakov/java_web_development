@@ -24,13 +24,12 @@ public class TrialConsumer implements Runnable {
     public void run() {
 
         while (true) {
-            String strTrial;
+            String strTrial = EMPTY_STRING;
             try {
                 strTrial = stringBlockingQueue.take();
                 System.out.println(strTrial);
-            } catch (InterruptedException e) {
-                //Thread will not be Interrupted while waiting!
-                LOGGER.log(Level.WARNING, e.getMessage());
+            } catch (InterruptedException ignored) {
+                LOGGER.log(Level.WARNING, ignored.getMessage());
                 continue;
             }
             if (DONE.equals(strTrial)) {
